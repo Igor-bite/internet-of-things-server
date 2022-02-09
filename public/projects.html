@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>IoT Controller</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <meta name="description" content="Controller for all your IoT things.">
+        <meta name="keywords" content="iot, internet of things, controller, arduino, esp">
+        <meta name="author" content="Igor Klyuzhev">
+        <link rel="stylesheet" href="assets/css/main.css"/>
+        <link rel="stylesheet" href="assets/css/menu_bar.css"/>
+        <script type="text/javascript" src="js/page_load.js"></script>
+        <script defer type="text/javascript" src="js/project_loader.js"></script>
+        <script defer src="./js/todo_handler.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="navbar">
+                <div class="menu">
+                    <h3 class="logo">Corner of <span>IoT</span></h3>
+                    <div class="hamburger-menu">
+                        <div class="bar"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="main-container">
+                <div class="main">
+                    <section id="projects">
+                        <article class="page_name">
+                            <h3>Your projects</h3>
+                        </article>
+                        <div class="projects_container">
+                            <div class="project_cell">
+                                <div class="project_header">Steven Lewis</div>
+                                <img src="https://picsum.photos/id/451/800/500">
+                            </div>
+                            <div class="project_cell">
+                                <div class="project_header">William Iven</div>
+                                <img src="https://picsum.photos/id/606/800/500">
+                            </div>
+                            <div class="project_cell">
+                                <div class="project_header">Simon Pape</div>
+                                <img src="https://picsum.photos/id/186/800/500">
+                            </div>
+                            <div class="project_cell">
+                                <div class="project_header">Noah Rosenfield</div>
+                                <img src="https://picsum.photos/id/52/800/500">
+                            </div>
+                            <div class="add_cell">
+                                <b> + </b>
+                            </div>
+                        </div>
+                    </section>
+
+                    <aside>
+                        <h3 class="important"> News </h3>
+                        <p> Internet of Cows: Ingestible IoT sensor monitors the health of livestock.
+                            The sensor, created by Austrian technology company smaXtec, provides data on inner body temperature, rumination, PH levels, and movement activity.
+                            This data helps to ensure the welfare of the livestock by sending early warnings of potential ill-health. </p>
+                    </aside>
+
+                    <section id="todo__list">
+                        <h3 class="important" onclick="todo.delete()"> ToDo list </h3>
+                        <div class="todo">
+                            <form id="add_form" class="todo__input">
+                                <input id="todo_text_input" class="todo__text" type="text" size="30" value="">
+                                <input class="todo__add" type="submit" value="Go">
+                            </form>
+                            <select class="todo__options">
+                                <option value="active">активные</option>
+                                <option value="completed">завершённые</option>
+                                <option value="deleted">удалённые</option>
+                            </select>
+                            <ul class="todo__items" data-todo-option="active"></ul>
+                        </div>
+                    </section>
+
+                    <footer>
+                        <pre class="full_size">
+__   __   __   ______  ______   ______   __   __   ______  ______
+/\ \ /\ "-.\ \ /\__  _\/\  ___\ /\  == \ /\ "-.\ \ /\  ___\/\__  _\
+\ \ \\ \ \-.  \\/_/\ \/\ \  __\ \ \  __< \ \ \-.  \\ \  __\\/_/\ \/
+ \ \_\\ \_\\"\_\  \ \_\ \ \_____\\ \_\ \_\\ \_\\"\_\\ \_____\ \ \_\
+  \/_/ \/_/ \/_/   \/_/  \/_____/ \/_/ /_/ \/_/ \/_/ \/_____/  \/_/
+ ______   ______
+ /\  __ \ /\  ___\
+ \ \ \/\ \\ \  __\
+\ \_____\\ \_\
+ \/_____/ \/_/
+  ______  __  __   __   __   __   ______   ______
+ /\__  _\/\ \_\ \ /\ \ /\ "-.\ \ /\  ___\ /\  ___\
+ \/_/\ \/\ \  __ \\ \ \\ \ \-.  \\ \ \__ \\ \___  \
+    \ \_\ \ \_\ \_\\ \_\\ \_\\"\_\\ \_____\\/\_____\
+     \/_/  \/_/\/_/ \/_/ \/_/ \/_/ \/_____/ \/_____/</pre>
+                        <pre class="mini_size">
+ __    ______    ______
+/\ \  /\  __ \  /\__  _\
+\ \ \ \ \ \/\ \ \/_/\ \/
+ \ \_\ \ \_____\   \ \_\
+  \/_/  \/_____/    \/_/</pre>
+                        <br>
+                        <b>&#128161;Have problems? We will help you: <a href="mailto:support@iotserver.com">support@iotserver.com</a></b>
+                        <div class="load_time">
+                            Page load time is <b id="page_load_time"></b> seconds.
+                        </div>
+                    </footer>
+                </div>
+                <div class="shadow one"></div>
+                <div class="shadow two"></div>
+            </div>
+            <div class="links">
+                <ul>
+                    <li id="home" class="active">
+                        <a href="home.html" style="--i: 0.05s">Home</a>
+                    </li>
+                    <li id="your_projects">
+                        <a href="projects.html" style="--i: 0.1s">Projects</a>
+                    </li>
+                    <li id="prices">
+                        <a href="prices.html" style="--i: 0.15s">Prices</a>
+                    </li>
+                    <li id="account">
+                        <a href="home.html" style="--i: 0.2s">Account</a>
+                    </li>
+                    <li id="contacts">
+                        <a href="home.html" style="--i: 0.25s">Contacts</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <script src='./js/menu_toggle.js'></script>
+    </body>
+</html>
