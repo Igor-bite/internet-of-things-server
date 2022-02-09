@@ -37,7 +37,7 @@ function change() {
     if (site_location === "/Web_ITMO_2021.github.io/projects.html") {
         changeActiveTo("your_projects");
     }
-    if (site_location === "/Web_ITMO_2021.github.io/home.html") {
+    if (site_location === "/Web_ITMO_2021.github.io/index.html") {
         changeActiveTo("home");
     }
     if (site_location === "/Web_ITMO_2021.github.io/prices.html") {
