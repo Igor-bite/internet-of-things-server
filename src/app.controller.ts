@@ -1,8 +1,12 @@
-import { Get, Controller, Render } from '@nestjs/common';
+import { Get, Controller, Render, Redirect } from "@nestjs/common";
 
 @Controller()
 export class AppController {
   @Get()
-  @Render('home')
+  @Redirect("/home.html")
   root() {}
+
+  @Get()
+  @Render('home')
+  mainPage() {}
 }
