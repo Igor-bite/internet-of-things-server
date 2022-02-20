@@ -27,6 +27,15 @@
           <p class="description">“All our dreams can come true,
             if we have the courage to pursue them.”
           </p>
+          {{#if isLogged}}
+            <p class="description">
+              Hi, {{name}}! Your are already logged in. Ready to start?
+            </p>
+          {{else}}
+            <p class="description">
+              Hi! Please, sign up to start.
+            </p>
+          {{/if}}
         </div>
       </header>
     </div>
@@ -36,7 +45,7 @@
   <div class="links">
     <ul>
       <li id="home" class="active">
-        <a href="index.html" style="--i: 0.05s">Home</a>
+        <a href="/" style="--i: 0.05s">Home</a>
       </li>
       <li id="your_projects">
         <a href="projects.html" style="--i: 0.1s">Projects</a>
@@ -45,14 +54,14 @@
         <a href="prices.html" style="--i: 0.15s">Prices</a>
       </li>
       <li id="account">
-        <a href="index.html" style="--i: 0.2s">Account</a>
+        <a href="/" style="--i: 0.2s">Account</a>
       </li>
       <li id="contacts">
-        <a href="index.html" style="--i: 0.25s">Contacts</a>
+        <a href="/" style="--i: 0.25s">Contacts</a>
       </li>
     </ul>
   </div>
 </div>
-<script src='./js/menu_toggle.js'></script>
+<script src='js/menu_toggle.js'></script>
 </body>
 </html>
