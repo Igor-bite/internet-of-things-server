@@ -14,7 +14,7 @@
 <body>
 <div class="container">
 
-  {{> navbar }}
+  {{> header }}
 
   <div class="main-container">
     <div class="main">
@@ -96,25 +96,9 @@
     <div class="shadow one"></div>
     <div class="shadow two"></div>
   </div>
-  <div class="links">
-      <ul>
-          <li id="home" class="active">
-              <a href="/" style="--i: 0.05s">Home</a>
-          </li>
-          <li id="your_projects">
-              <a href="projects" style="--i: 0.1s">Projects</a>
-          </li>
-          <li id="prices">
-              <a href="prices" style="--i: 0.15s">Prices</a>
-          </li>
-          <li id="account">
-              <a href="/" style="--i: 0.2s">Account</a>
-          </li>
-          <li id="contacts">
-              <a href="/" style="--i: 0.25s">Contacts</a>
-          </li>
-      </ul>
-  </div>
+
+  {{> sideNavBar }}
+
 </div>
 
 <script src="js/menu_toggle.js"></script>
