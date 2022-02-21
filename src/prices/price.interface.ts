@@ -2,5 +2,9 @@ export interface Price {
   id: number;
   planName: string;
   priceForMonth: number;
-  priceForYear: number;
+  devicesMax: number;
+  usersMax: number;
+  widgetsTypes: string;
+  logsStorageTime: string;
+  buttonActionText: string;
 }

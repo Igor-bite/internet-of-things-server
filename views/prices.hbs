@@ -13,9 +13,7 @@
 </head>
 <body>
 <div class="container">
-
   {{> header }}
-
   <div class="main-container">
     <div class="main">
         <article class="page_name">
@@ -29,26 +27,21 @@
               {{#each prices}}
                 <div class="grid-item-price"><b>${{this.priceForMonth}} /month</b></div>
               {{/each}}
-
-                <div class="grid-item">2 devices max</div>
-                <div class="grid-item">10 devices max</div>
-                <div class="grid-item">40 devices max</div>
-
-                <div class="grid-item">5 users max</div>
-                <div class="grid-item">10 users max</div>
-                <div class="grid-item">40 users max</div>
-
-                <div class="grid-item">Basic Widgets</div>
-                <div class="grid-item">Mobile PRO Widgets</div>
-                <div class="grid-item">Mobile PRO Widgets</div>
-
-                <div class="grid-item">1 week of historical data</div>
-                <div class="grid-item">3 months of historical data</div>
-                <div class="grid-item">Unlimited historical data</div>
-
-                <div class="grid-item-button">Try for free</div>
-                <div class="grid-item-button">Try for free</div>
-                <div class="grid-item-button">Try for free</div>
+              {{#each prices}}
+                <div class="grid-item">{{this.devicesMax}} devices max</div>
+              {{/each}}
+              {{#each prices}}
+                <div class="grid-item">{{this.usersMax}} users max</div>
+              {{/each}}
+              {{#each prices}}
+                <div class="grid-item">{{this.widgetsTypes}} Widgets</div>
+              {{/each}}
+              {{#each prices}}
+                <div class="grid-item">{{this.logsStorageTime}} of historical data</div>
+              {{/each}}
+              {{#each prices}}
+                <div class="grid-item-button">{{this.buttonActionText}}</div>
+              {{/each}}
             </div>
         </div>
         <div class="mini_size">
@@ -56,11 +49,11 @@
             {{#each prices}}
               <div class="grid-item-header">{{this.planName}}</div>
               <div class="grid-item-price"><b>${{this.priceForMonth}} /month</b></div>
-              <div class="grid-item">2 devices max</div>
-              <div class="grid-item">5 users max</div>
-              <div class="grid-item">Basic Widgets</div>
-              <div class="grid-item">1 week of historical data</div>
-              <div class="grid-item-button">Try for free</div>
+              <div class="grid-item">{{this.devicesMax}} devices max</div>
+              <div class="grid-item">{{this.usersMax}} users max</div>
+              <div class="grid-item">{{this.widgetsTypes}} Widgets</div>
+              <div class="grid-item">{{this.logsStorageTime}} of historical data</div>
+              <div class="grid-item-button">{{this.buttonActionText}}</div>
             {{/each}}
           </div>
         </div>

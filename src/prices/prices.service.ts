@@ -5,9 +5,9 @@ import { Price } from "./price.interface";
 
 @Injectable()
 export default class PricesService {
-  private prices: Price[] = [{id: 1, priceForMonth: 34, priceForYear: 349, planName: "Lite"},
-                             {id: 2, priceForMonth: 50, priceForYear: 499, planName: "Lite Plus"},
-                             {id: 3, priceForMonth: 100, priceForYear: 999, planName: "Pro"}];
+  private prices: Price[] = [{id: 1, planName: "Lite", priceForMonth: 34, devicesMax: 2, usersMax: 5, widgetsTypes: "Basic", logsStorageTime: "1 week", buttonActionText: "Try for free"},
+                              {id: 1, planName: "Lite Plus", priceForMonth: 50, devicesMax: 10, usersMax: 10, widgetsTypes: "Mobile PRO", logsStorageTime: "3 months", buttonActionText: "Try for free"},
+                              {id: 1, planName: "Pro", priceForMonth: 70, devicesMax: 40, usersMax: 40, widgetsTypes: "Mobile PRO", logsStorageTime: "Unlimited time", buttonActionText: "Try for free"}];
 
   getPricePlans() {
     return this.prices;
