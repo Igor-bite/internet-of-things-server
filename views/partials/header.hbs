@@ -1,6 +1,13 @@
 <div class="navbar">
   <div class="menu">
     <h3 class="logo">Corner of <span>IoT</span></h3>
+    {{#if (isdefined isLogged)}}
+      {{#if isLogged}}
+        <h2> Your logged in! </h2>
+      {{else}}
+        <h2> <a href="projects"> Sign In </a> / <a href="prices"> Sign Up </a> </h2>
+      {{/if}}
+    {{/if}}
     <div class="hamburger-menu">
       <div class="bar"></div>
     </div>
