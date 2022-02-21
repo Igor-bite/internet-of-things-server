@@ -6,7 +6,10 @@ import { Project } from "./project.interface";
 @Injectable()
 export default class ProjectsService {
   private lastProjectId = 0;
-  private posts: Project[] = [{id: 12, content: "", title: "Hello world!"}];
+  private posts: Project[] = [{id: 1, title: "First project", img: "https://picsum.photos/id/451/800/500"},
+                              {id: 2, title: "William Iven", img: "https://picsum.photos/id/606/800/500"},
+                              {id: 3, title: "Simon Pape", img: "https://picsum.photos/id/186/800/500"},
+                              {id: 4, title: "Noah Rosenfield", img: "https://picsum.photos/id/52/800/500"}];
 
   getAllProjects() {
     return this.posts;

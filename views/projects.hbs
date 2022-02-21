@@ -25,22 +25,12 @@
                             <h3>Your projects</h3>
                         </article>
                         <div class="projects_container">
+                          {{#each projects}}
                             <div class="project_cell">
-                                <div class="project_header">Steven Lewis</div>
-                                <img src="https://picsum.photos/id/451/800/500">
+                              <div class="project_header">{{this.title}}</div>
+                              <img src={{this.img}}>
                             </div>
-                            <div class="project_cell">
-                                <div class="project_header">William Iven</div>
-                                <img src="https://picsum.photos/id/606/800/500">
-                            </div>
-                            <div class="project_cell">
-                                <div class="project_header">Simon Pape</div>
-                                <img src="https://picsum.photos/id/186/800/500">
-                            </div>
-                            <div class="project_cell">
-                                <div class="project_header">Noah Rosenfield</div>
-                                <img src="https://picsum.photos/id/52/800/500">
-                            </div>
+                          {{/each}}
                             <div class="add_cell">
                                 <b> + </b>
                             </div>
@@ -54,21 +44,7 @@
                             This data helps to ensure the welfare of the livestock by sending early warnings of potential ill-health. </p>
                     </aside>
 
-                    <section id="todo__list">
-                        <h3 class="important" onclick="todo.delete()"> ToDo list </h3>
-                        <div class="todo">
-                            <form id="add_form" class="todo__input">
-                                <input id="todo_text_input" class="todo__text" type="text" size="30" value="">
-                                <input class="todo__add" type="submit" value="Go">
-                            </form>
-                            <select class="todo__options">
-                                <option value="active">активные</option>
-                                <option value="completed">завершённые</option>
-                                <option value="deleted">удалённые</option>
-                            </select>
-                            <ul class="todo__items" data-todo-option="active"></ul>
-                        </div>
-                    </section>
+                    {{> todoList}}
 
                   {{> footer}}
 
