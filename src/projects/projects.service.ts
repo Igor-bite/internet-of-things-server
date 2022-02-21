@@ -5,9 +5,6 @@ import { Project } from "./project.interface";
 
 @Injectable()
 export default class ProjectsService {
-  constructor() {
-    console.log(`Created ProjectsService`);
-  }
   private lastProjectId = 0;
   private posts: Project[] = [{id: 12, content: "", title: "Hello world!"}];
 
