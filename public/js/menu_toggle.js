@@ -34,19 +34,19 @@ function changeActiveTo(active) {
 function change() {
     const site_location = new URL(document.location).pathname
 
-    if (site_location === "/projects.html") {
+    if (site_location === "/projects") {
         changeActiveTo("your_projects");
     }
     if (site_location === "/") {
         changeActiveTo("home");
     }
-    if (site_location === "/prices.html") {
+    if (site_location === "/prices") {
         changeActiveTo("prices");
     }
-    // if (site_location === "/account.html") {
+    // if (site_location === "/account") {
     //     changeActiveTo("account");
     // }
-    // if (site_location === "/contacts.html") {
+    // if (site_location === "/contacts") {
     //     changeActiveTo("contacts");
     // }
 }

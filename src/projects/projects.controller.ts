@@ -10,6 +10,7 @@ export default class ProjectsController {
   ) {}
 
   @Get()
+  @Render('projects')
   getAllProjects() {
     return this.projectsService.getAllProjects();
   }
