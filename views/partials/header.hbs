@@ -5,7 +5,10 @@
       {{#if isLogged}}
         <h2> Your logged in! </h2>
       {{else}}
-        <h2> <a href="projects"> Sign In </a> / <a href="prices"> Sign Up </a> </h2>
+        <div>
+          <a href="projects"><button class="custom-btn btn-16">Sign In</button></a>
+          <a style="margin-left: 10px" href="prices"><button class="custom-btn btn-16">Sign Up</button></a>
+        </div>
       {{/if}}
     {{/if}}
     <div class="hamburger-menu">
