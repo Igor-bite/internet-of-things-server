@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,4 +5,85 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id              Int          @id @default(autoincrement())
+  createdAt       DateTime     @default(now())
+  email           String       @unique
+  name            String?
+  surname         String?
+  subscription    Subscription @default(STANDART)
+  projects        Project[]
+  energy          Int          @default(1000)
+  nextPaymentDate DateTime?
+
+  @@map("users")
+}
+
+enum Subscription {
+  STANDART
+  PREMIUM
+}
+
+model Project {
+  id          Int       @id @default(autoincrement())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  sharingCode String?
+  title       String
+  owner       User      @relation(fields: [ownerId], references: [id])
+  ownerId     Int
+  controls    Control[]
+  displays    Display[]
+
+  @@map("projects")
+}
+
+model Control {
+  id        Int         @id @default(autoincrement())
+  updatedAt DateTime    @updatedAt
+  type      ControlType
+  title     String?
+  value     Float?
+  minValue  Float?
+  maxValue  Float?
+  isHolds   Boolean     @default(false)
+  project   Project     @relation(fields: [projectId], references: [id])
+  projectId Int
+  device    Device      @relation(fields: [deviceId], references: [id])
+  deviceId  Int
+
+  @@map("controls")
+}
+
+enum ControlType {
+  SWITCH
+  BUTTON
+  SLIDER
+}
+
+model Display {
+  id             Int      @id @default(autoincrement())
+  updatedAt      DateTime @updatedAt
+  title          String?
+  value          Float?
+  updateInterval DateTime @default(now())
+  project        Project  @relation(fields: [projectId], references: [id])
+  projectId      Int
+  port           String
+  device         Device   @relation(fields: [deviceId], references: [id])
+  deviceId       Int
+
+  @@map("displays")
+}
+
+model Device {
+  id                Int       @id @default(autoincrement())
+  name              String
+  connectedControls Control[]
+  connectedDisplays Display[]
+  lastConnected     DateTime?
+
+  @@map("devices")
 }
