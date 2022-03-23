@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Prices</title>
+    {{> meta }}
+    {{> css }}
+    {{> pageload_script }}
+</head>
+<body>
+<div class="container">
+  {{> header }}
+  <div class="main-container">
+    <div class="main">
+        <article class="page_name">
+            <h3>Choose the most suitable plan for you</h3>
+        </article>
+        <div class="full_size">
+            <div class="price_plans_container">
+              {{#each prices}}
+                <div class="grid-item-header">{{this.planName}}</div>
+              {{/each}}
+              {{#each prices}}
+                <div class="grid-item-price"><b>${{this.priceForMonth}} /month</b></div>
+              {{/each}}
+              {{#each prices}}
+                <div class="grid-item">{{this.devicesMax}} devices max</div>
+              {{/each}}
+              {{#each prices}}
+                <div class="grid-item">{{this.usersMax}} users max</div>
+              {{/each}}
+              {{#each prices}}
+                <div class="grid-item">{{this.widgetsTypes}} Widgets</div>
+              {{/each}}
+              {{#each prices}}
+                <div class="grid-item">{{this.logsStorageTime}} of historical data</div>
+              {{/each}}
+              {{#each prices}}
+                <div class="grid-item-button">{{this.buttonActionText}}</div>
+              {{/each}}
+            </div>
+        </div>
+        <div class="mini_size">
+          <div class="price_plans_container">
+            {{#each prices}}
+              <div class="grid-item-header">{{this.planName}}</div>
+              <div class="grid-item-price"><b>${{this.priceForMonth}} /month</b></div>
+              <div class="grid-item">{{this.devicesMax}} devices max</div>
+              <div class="grid-item">{{this.usersMax}} users max</div>
+              <div class="grid-item">{{this.widgetsTypes}} Widgets</div>
+              <div class="grid-item">{{this.logsStorageTime}} of historical data</div>
+              <div class="grid-item-button">{{this.buttonActionText}}</div>
+            {{/each}}
+          </div>
+        </div>
+        </section>
+      {{> footer}}
+    </div>
+    {{> shadows}}
+  </div>
+  {{> sideNavBar }}
+</div>
+
+<script src="js/menu_toggle.js"></script>
+</body>
+</html>

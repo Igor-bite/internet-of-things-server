@@ -1,0 +1,127 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("HEROKU_POSTGRESQL_COPPER_URL")
+}
+
+model User {
+  id               Int              @id @default(autoincrement())
+  createdAt        DateTime         @default(now())
+  email            String           @unique
+  name             String?
+  surname          String?
+  subscriptionPlan SubscriptionPlan @default(NONE)
+  projects         Project[]        @relation("Projects")
+  sharedProjects   Project[]        @relation("SharedProjects")
+  nextPaymentDate  DateTime?
+  friends          User[]           @relation("Friends", references: [id])
+  friendOf         User[]           @relation("Friends", references: [id])
+  todos            ToDo[]
+
+  @@map("users")
+}
+
+enum SubscriptionPlan {
+  NONE
+  PREMIUM
+  PREMIUM_PRO
+  PREMIUM_PRO_PLUS
+}
+
+model ToDo {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String?
+  state       TodoState @default(ACTIVE)
+  createdAt   DateTime  @default(now())
+  owner       User      @relation(fields: [ownerId], references: [id])
+  ownerId     Int
+
+  @@map("todos")
+}
+
+enum TodoState {
+  ACTIVE
+  COMPLETE
+}
+
+model Project {
+  id                 Int       @id @default(autoincrement())
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  sharingCode        String?
+  title              String
+  owner              User      @relation("Projects", fields: [ownerId], references: [id])
+  ownerId            Int
+  controls           Control[] @relation("Controls")
+  displays           Display[] @relation("Displays")
+  addedUsers         User[]    @relation("SharedProjects")
+  backgroundImageUrl String?
+
+  @@map("projects")
+}
+
+model Control {
+  id        Int         @id @default(autoincrement())
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  type      ControlType
+  title     String?
+  value     Float?
+  minValue  Float?
+  maxValue  Float?
+  isHolds   Boolean     @default(false)
+  project   Project     @relation("Controls", fields: [projectId], references: [id])
+  projectId Int
+  port      String
+  device    Device      @relation("ConnectedControls", fields: [deviceId], references: [id])
+  deviceId  Int
+
+  @@map("controls")
+}
+
+enum ControlType {
+  SWITCH
+  BUTTON
+  SLIDER
+}
+
+model Display {
+  id             Int      @id @default(autoincrement())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  title          String?
+  value          Float?
+  updateInterval Int      @default(1)
+  project        Project  @relation("Displays", fields: [projectId], references: [id])
+  projectId      Int
+  port           String
+  device         Device   @relation("ConnectedDisplays", fields: [deviceId], references: [id])
+  deviceId       Int
+
+  @@map("displays")
+}
+
+model Device {
+  id                  Int       @id @default(autoincrement())
+  name                String
+  microcontrollerName String?
+  connectedControls   Control[] @relation("ConnectedControls")
+  connectedDisplays   Display[] @relation("ConnectedDisplays")
+  lastSeen            DateTime?
+  notifyAfter         Int?
+
+  @@map("devices")
+}
+
+model NewsPost {
+  id    Int    @id @default(autoincrement())
+  title String
+  text  String
+
+  @@map("news")
+}

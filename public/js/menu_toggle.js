@@ -34,19 +34,19 @@ function changeActiveTo(active) {
 function change() {
     const site_location = new URL(document.location).pathname
 
-    if (site_location === "/Web_ITMO_2021.github.io/projects.html") {
+    if (site_location === "/projects") {
         changeActiveTo("your_projects");
     }
-    if (site_location === "/Web_ITMO_2021.github.io/index.html") {
+    if (site_location === "/") {
         changeActiveTo("home");
     }
-    if (site_location === "/Web_ITMO_2021.github.io/prices.html") {
+    if (site_location === "/prices") {
         changeActiveTo("prices");
     }
-    // if (site_location === "/Web_ITMO_2021.github.io/account.html") {
+    // if (site_location === "/account") {
     //     changeActiveTo("account");
     // }
-    // if (site_location === "/Web_ITMO_2021.github.io/contacts.html") {
+    // if (site_location === "/contacts") {
     //     changeActiveTo("contacts");
     // }
 }

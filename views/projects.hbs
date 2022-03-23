@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>IoT Controller</title>
+        {{> meta }}
+        {{> css }}
+        {{> pageload_script }}
+        {{> project_loader_script }}
+        {{> todo_handler_script }}
+    </head>
+    <body>
+        <div class="container">
+          {{> header }}
+          <div class="main-container">
+                <div class="main">
+                    <section id="projects">
+                        <article class="page_name">
+                            <h3>Your projects</h3>
+                        </article>
+                        <div class="projects_container">
+                          {{#each projects}}
+                            <div class="project_cell">
+                              <div class="project_header">{{this.title}}</div>
+                              <img src={{this.img}}>
+                            </div>
+                          {{/each}}
+                            <div class="add_cell">
+                                <b> + </b>
+                            </div>
+                        </div>
+                    </section>
+
+                    <aside>
+                        <h3 class="important"> News </h3>
+                        <p> Internet of Cows: Ingestible IoT sensor monitors the health of livestock.
+                            The sensor, created by Austrian technology company smaXtec, provides data on inner body temperature, rumination, PH levels, and movement activity.
+                            This data helps to ensure the welfare of the livestock by sending early warnings of potential ill-health. </p>
+                    </aside>
+                    {{> todoList}}
+                  {{> footer}}
+                </div>
+            {{> shadows}}
+            </div>
+          {{> sideNavBar }}
+        </div>
+        <script src="js/menu_toggle.js"></script>
+    </body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>IoT Controller</title>
+  {{> meta }}
+  {{> css }}
+</head>
+<body>
+<div class="container">
+  {{> header }}
+  <div class="main-container">
+    <div class="main">
+      <header>
+        <div class="overlay">
+          <h2 class="title">Future of IoT is here</h2>
+          <p class="description">“All our dreams can come true,
+            if we have the courage to pursue them.”
+          </p>
+          {{#if isLogged}}
+            <p class="description">
+              Hi, {{name}}! Your are already logged in. Ready to start?
+            </p>
+          {{else}}
+            <p class="description">
+              Hi! Please, sign up to start.
+            </p>
+          {{/if}}
+        </div>
+      </header>
+    </div>
+    {{> shadows}}
+  </div>
+  {{> sideNavBar }}
+</div>
+<script src='js/menu_toggle.js'></script>
+</body>
+</html>
