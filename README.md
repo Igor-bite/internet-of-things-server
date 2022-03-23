@@ -6,6 +6,12 @@
 ### Description
 The aim of the project is to easily control your IoT devices through website or mobile app.
 
+- Each user has projects
+- Each project has controls like buttons, sliders and displays to display data from microcontroller
+- Projects can be shared between users
+- Users can add his friends
+- Each user can add ToDos that are synced between platforms (web, mobile)
+
 ### Entity Relationships Diagram
 
 ![](erd.png)
