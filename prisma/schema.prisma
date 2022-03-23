@@ -96,7 +96,7 @@ model Display {
   updatedAt      DateTime @updatedAt
   title          String?
   value          Float?
-  updateInterval DateTime @default(now())
+  updateInterval Int      @default(1)
   project        Project  @relation("Displays", fields: [projectId], references: [id])
   projectId      Int
   port           String
