@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 // import CreatePostDto from './dto/createPost.dto';
-import { Price } from "./price.interface";
+import { Price } from "../price.interface";
 // import UpdatePostDto from './dto/updatePost.dto';
 
 @Injectable()

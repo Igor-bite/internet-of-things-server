@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Render, Get, Param, Post, Put } from '@nestjs/common';
-import PricesService from './prices.service';
+import PricesService from '../services/prices.service';
 
 @Controller('prices')
 export default class PricesController {

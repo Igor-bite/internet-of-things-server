@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Render, Get, Param, Post, Put } from '@nestjs/common';
-import ProjectsService from './projects.service';
+import ProjectsService from '../services/projects.service';
 // import CreatePostDto from './dto/createPost.dto';
 // import UpdatePostDto from './dto/updatePost.dto';
 
