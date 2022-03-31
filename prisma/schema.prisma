@@ -114,6 +114,7 @@ model Device {
   connectedDisplays   Display[] @relation("ConnectedDisplays")
   lastSeen            DateTime?
   notifyAfter         Int?
+  token               String    @default(uuid())
 
   @@map("devices")
 }
