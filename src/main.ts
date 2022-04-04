@@ -5,12 +5,14 @@ import * as hbs from 'hbs';
 import { AppModule } from './app.module';
 import { ResponseTimeInterceptor } from "./interceptors/timecalc.interceptor";
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { ValidationPipe } from "@nestjs/common";
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(
     AppModule,
   );
 
+  app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(new ResponseTimeInterceptor());
   app.useStaticAssets(join(__dirname, '..', 'public'));
   app.setBaseViewsDir(join(__dirname, '..', 'views'));

@@ -1,17 +1,18 @@
-import { ApiProperty, ApiTags } from "@nestjs/swagger";
-import { IsDefined, IsString } from "class-validator";
+import { ApiProperty } from "@nestjs/swagger";
+import { IsNotEmpty, IsOptional, IsString, IsUrl } from "class-validator";
 
 export class CreateProjectDto {
   @ApiProperty({
     description: 'Title of the project'
   })
-  @IsDefined()
+  @IsNotEmpty()
   @IsString()
   readonly title: string;
 
   @ApiProperty({
     description: 'Url for background image of the project'
   })
-  @IsString()
+  @IsOptional()
+  @IsUrl()
   readonly backgroundImageUrl?: string;
 }
