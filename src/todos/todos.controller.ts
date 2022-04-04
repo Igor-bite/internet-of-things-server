@@ -9,14 +9,14 @@ import {
 @ApiBearerAuth()
 @ApiTags('todos')
 @Controller('todos')
-export class TodosController {
+export default class TodosController {
   constructor(private readonly todosService: TodosService) {}
 
   @Get()
   async getAllTodos(
     @User('id') userId: number
   ): Promise<ToDoModel[]> {
-    return this.todosService.getAllTodos(userId);
+    return await this.todosService.getAllTodos(userId);
   }
 
   @Get(':id')
@@ -24,7 +24,7 @@ export class TodosController {
     @User('id') userId: number,
     @Param('id') todoId: number
   ): Promise<ToDoModel> {
-    return this.todosService.getTodoById(userId, todoId);
+    return await this.todosService.getTodoById(userId, todoId);
   }
 
   @Post('add')
@@ -32,7 +32,7 @@ export class TodosController {
     @User('id') userId: number,
     @Body() todoData: { title: string; description?: string }
   ): Promise<ToDoModel> {
-    return this.todosService.addTodo(userId, todoData);
+    return await this.todosService.addTodo(userId, todoData);
   }
 
   @Post('update/:id')
@@ -41,7 +41,7 @@ export class TodosController {
     @Param('id') todoId: number,
     @Body() todoData: { title?: string; description?: string }
   ): Promise<ToDoModel> {
-    return this.todosService.updateTodo(userId, todoId, todoData);
+    return await this.todosService.updateTodo(userId, todoId, todoData);
   }
 
   @Post('changeState/:id&:state')
@@ -50,7 +50,7 @@ export class TodosController {
     @Param('id') todoId: number,
     @Param('state') state: TodoState
   ): Promise<ToDoModel> {
-    return this.todosService.changeState(userId, todoId, state);
+    return await this.todosService.changeState(userId, todoId, state);
   }
 
   @Delete(':id')
@@ -58,6 +58,6 @@ export class TodosController {
     @User('id') userId: number,
     @Param('id') todoId: number
   ): Promise<ToDoModel> {
-    return this.todosService.removeTodo(userId, todoId);
+    return await this.todosService.removeTodo(userId, todoId);
   }
 }
