@@ -13,13 +13,13 @@ import {
 export class TodosController {
   constructor(private readonly todosService: TodosService) {}
 
-  @Get(':id')
-  async getTodoById(@User('id') userId: number, @Param('id') todoId: string): Promise<ToDoModel> {
+  @Get()
+  async getAllTodos(@User('id') userId: number): Promise<ToDoModel[]> {
     throw new NotImplementedException();
   }
 
-  @Get()
-  async getAllTodos(@User('id') userId: number): Promise<ToDoModel[]> {
+  @Get(':id')
+  async getTodoById(@User('id') userId: number, @Param('id') todoId: string): Promise<ToDoModel> {
     throw new NotImplementedException();
   }
 
@@ -35,8 +35,8 @@ export class TodosController {
     throw new NotImplementedException();
   }
 
-  @Post('toggle/:id')
-  async toggleState(@User('id') userId: number, @Param('id') todoId: string): Promise<ToDoModel> {
+  @Post('changeState/:id:state')
+  async changeState(@User('id') userId: number, @Param('id') todoId: string, @Param('state') state: string): Promise<ToDoModel> {
     throw new NotImplementedException();
   }
 
