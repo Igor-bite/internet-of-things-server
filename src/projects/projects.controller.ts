@@ -46,7 +46,7 @@ export default class ProjectsController {
     return this.projectsService.removeProject(userId, projectId);
   }
 
-  @Post('update/:id')
+  @Post(':id/update')
   updateProject(
     @User('id') userId: number,
     @Param('id') projectId: number,
@@ -55,7 +55,7 @@ export default class ProjectsController {
     return this.projectsService.updateProject(userId, projectId, projectData);
   }
 
-  @Get('share/:id')
+  @Get(':id/share')
   shareProject(
     @User('id') userId: number,
     @Param('id') projectId: number

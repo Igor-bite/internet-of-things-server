@@ -37,7 +37,7 @@ export default class TodosController {
     return await this.todosService.addTodo(userId, todoData);
   }
 
-  @Post('update/:id')
+  @Post(':id/update')
   async updateTodo(
     @User('id') userId: number,
     @Param('id') todoId: number,
@@ -46,7 +46,7 @@ export default class TodosController {
     return await this.todosService.updateTodo(userId, todoId, todoData);
   }
 
-  @Post('changeState/:id&:state')
+  @Post(':id/changeState/:state')
   async changeState(
     @User('id') userId: number,
     @Param('id') todoId: number,
