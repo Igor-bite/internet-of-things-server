@@ -1,10 +1,7 @@
-import { Module } from '@nestjs/common';
-import { PricesModule } from "../prices/prices.module";
-import ApiPricesController from "./api.prices.controller";
+import { forwardRef, Module } from "@nestjs/common";
+import { AppModule } from "../app.module";
 
 @Module({
-  imports: [PricesModule],
-  controllers: [ApiPricesController],
-  providers: []
+  imports: [forwardRef(() => AppModule)]
 })
 export class ApiModule {}
