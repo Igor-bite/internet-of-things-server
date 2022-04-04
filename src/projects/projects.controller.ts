@@ -18,15 +18,15 @@ export default class ProjectsController {
   @Render('projects')
   getAllProjects(
     @User('id') userId: number
-  ): Promise<Project[]> {
-    return this.projectsService.getAllProjects(userId);
+  ) {
+    return { projects: this.projectsService.getAllProjects(userId) };
   }
 
   @Get(':id')
   getProjectById(
     @User('id') userId: number,
     @Param('id') projectId: number
-  ): Promise<Project> {
+  ) {
     return this.projectsService.getProjectById(userId, projectId);
   }
 
@@ -34,7 +34,7 @@ export default class ProjectsController {
   addProject(
     @User('id') userId: number,
     @Body() projectData: CreateProjectDto
-  ): Promise<Project> {
+  ) {
     return this.projectsService.addProject(userId, projectData);
   }
 
@@ -42,7 +42,7 @@ export default class ProjectsController {
   removeProject(
     @User('id') userId: number,
     @Param('id') projectId: number
-  ): Promise<Project> {
+  ) {
     return this.projectsService.removeProject(userId, projectId);
   }
 
@@ -51,7 +51,7 @@ export default class ProjectsController {
     @User('id') userId: number,
     @Param('id') projectId: number,
     @Body() projectData: UpdateProjectDto
-  ): Promise<Project> {
+  ) {
     return this.projectsService.updateProject(userId, projectId, projectData);
   }
 
@@ -59,7 +59,7 @@ export default class ProjectsController {
   shareProject(
     @User('id') userId: number,
     @Param('id') projectId: number
-  ): Promise<Project> {
+  ) {
     return this.projectsService.shareProject(userId, projectId);
   }
 }

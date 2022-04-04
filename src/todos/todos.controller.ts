@@ -17,7 +17,7 @@ export default class TodosController {
   @Get()
   async getAllTodos(
     @User('id') userId: number
-  ): Promise<ToDoModel[]> {
+  ) {
     return await this.todosService.getAllTodos(userId);
   }
 
@@ -25,7 +25,7 @@ export default class TodosController {
   async getTodoById(
     @User('id') userId: number,
     @Param('id') todoId: number
-  ): Promise<ToDoModel> {
+  ) {
     return await this.todosService.getTodoById(userId, todoId);
   }
 
@@ -33,7 +33,7 @@ export default class TodosController {
   async addTodo(
     @User('id') userId: number,
     @Body() todoData: CreateTodoDto
-  ): Promise<ToDoModel> {
+  ) {
     return await this.todosService.addTodo(userId, todoData);
   }
 
@@ -42,7 +42,7 @@ export default class TodosController {
     @User('id') userId: number,
     @Param('id') todoId: number,
     @Body() todoData: UpdateTodoDto
-  ): Promise<ToDoModel> {
+  ) {
     return await this.todosService.updateTodo(userId, todoId, todoData);
   }
 
@@ -51,7 +51,7 @@ export default class TodosController {
     @User('id') userId: number,
     @Param('id') todoId: number,
     @Param('state') state: TodoState
-  ): Promise<ToDoModel> {
+  ) {
     return await this.todosService.changeState(userId, todoId, state);
   }
 
@@ -59,7 +59,7 @@ export default class TodosController {
   async removeTodo(
     @User('id') userId: number,
     @Param('id') todoId: number
-  ): Promise<ToDoModel> {
+  ) {
     return await this.todosService.removeTodo(userId, todoId);
   }
 }

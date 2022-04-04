@@ -16,7 +16,7 @@ export default class NewsController {
   @Get()
   getAllNews(
     @User('id') userId: number
-  ): Promise<NewsPost[]> {
+  ) {
     return this.newsService.getAllNews(userId);
   }
 
@@ -24,7 +24,7 @@ export default class NewsController {
   getNewsById(
     @User('id') userId: number,
     @Param('id') newsId: number
-  ): Promise<NewsPost> {
+  ) {
     return this.newsService.getNewsById(userId, newsId);
   }
 
@@ -32,7 +32,7 @@ export default class NewsController {
   addNews(
     @User('id') userId: number,
     @Body() newsData: CreateNewsDto
-  ): Promise<NewsPost> {
+  ) {
     return this.newsService.addNews(userId, newsData);
   }
 
@@ -40,7 +40,7 @@ export default class NewsController {
   removeNews(
     @User('id') userId: number,
     @Param('id') newsId: number
-  ): Promise<NewsPost> {
+  ) {
     return this.newsService.removeNews(userId, newsId);
   }
 }
