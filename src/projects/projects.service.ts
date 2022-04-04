@@ -1,23 +1,32 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Project } from "./project.interface";
+import { Injectable, NotImplementedException } from "@nestjs/common";
+import { Project } from "@prisma/client";
+import { CreateProjectDto } from "./dto/createProject.dto";
+import { UpdateProjectDto } from "./dto/updatePost.dto";
 
 @Injectable()
 export default class ProjectsService {
-  private lastProjectId = 0;
-  private posts: Project[] = [{id: 1, title: "First project", img: "https://picsum.photos/id/451/800/500"},
-                              {id: 2, title: "William Iven", img: "https://picsum.photos/id/606/800/500"},
-                              {id: 3, title: "Simon Pape", img: "https://picsum.photos/id/186/800/500"},
-                              {id: 4, title: "Noah Rosenfield", img: "https://picsum.photos/id/52/800/500"}];
-
-  getAllProjects() {
-    return this.posts;
+  getAllProjects(userId: number): Promise<Project[]> {
+    throw new NotImplementedException();
   }
 
-  getProjectById(id: number) {
-    const post = this.posts.find(post => post.id === id);
-    if (post) {
-      return post;
-    }
-    throw new HttpException('Post not found', HttpStatus.NOT_FOUND);
+  getProjectById(userId: number, projectId: number): Promise<Project> {
+    throw new NotImplementedException();
+  }
+
+  addProject(userId: number, projectData: CreateProjectDto): Promise<Project> {
+    throw new NotImplementedException();
+  }
+
+  removeProject(userId: number, projectId: number): Promise<Project> {
+    throw new NotImplementedException();
+  }
+
+  updateProject(userId: number, projectId: number,
+                projectData: UpdateProjectDto): Promise<Project> {
+    throw new NotImplementedException();
+  }
+
+  shareProject(userId: number, projectId: number): Promise<Project> {
+    throw new NotImplementedException();
   }
 }
