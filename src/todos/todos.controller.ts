@@ -5,6 +5,8 @@ import { ToDo as ToDoModel, TodoState } from '@prisma/client';
 import {
   ApiBearerAuth, ApiTags,
 } from '@nestjs/swagger';
+import { UpdateTodoDto } from "./dto/updateTodo.dto";
+import { CreateTodoDto } from "./dto/createTodo.dto";
 
 @ApiBearerAuth()
 @ApiTags('todos')
@@ -30,7 +32,7 @@ export default class TodosController {
   @Post('add')
   async addTodo(
     @User('id') userId: number,
-    @Body() todoData: { title: string; description?: string }
+    @Body() todoData: CreateTodoDto
   ): Promise<ToDoModel> {
     return await this.todosService.addTodo(userId, todoData);
   }
@@ -39,7 +41,7 @@ export default class TodosController {
   async updateTodo(
     @User('id') userId: number,
     @Param('id') todoId: number,
-    @Body() todoData: { title?: string; description?: string }
+    @Body() todoData: UpdateTodoDto
   ): Promise<ToDoModel> {
     return await this.todosService.updateTodo(userId, todoId, todoData);
   }
