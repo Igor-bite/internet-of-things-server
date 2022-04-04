@@ -7,7 +7,7 @@ export default class TodosService {
     throw new NotImplementedException();
   }
 
-  getTodoById(userId: number, todoId: string): Promise<ToDoModel> {
+  getTodoById(userId: number, todoId: number): Promise<ToDoModel> {
     throw new NotImplementedException();
   }
 
@@ -15,16 +15,16 @@ export default class TodosService {
     throw new NotImplementedException();
   }
 
-  updateTodo(userId: number, todoId: string,
+  updateTodo(userId: number, todoId: number,
                    todoData: { title?: string; description?: string }): Promise<ToDoModel> {
     throw new NotImplementedException();
   }
 
-  changeState(userId: number, todoId: string, state: TodoState): Promise<ToDoModel> {
+  changeState(userId: number, todoId: number, state: TodoState): Promise<ToDoModel> {
     throw new NotImplementedException();
   }
 
-  removeTodo(userId: number, todoId: string): Promise<ToDoModel> {
+  removeTodo(userId: number, todoId: number): Promise<ToDoModel> {
     throw new NotImplementedException();
   }
 }

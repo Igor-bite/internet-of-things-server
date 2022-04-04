@@ -22,7 +22,7 @@ export class TodosController {
   @Get(':id')
   async getTodoById(
     @User('id') userId: number,
-    @Param('id') todoId: string
+    @Param('id') todoId: number
   ): Promise<ToDoModel> {
     return this.todosService.getTodoById(userId, todoId);
   }
@@ -38,7 +38,7 @@ export class TodosController {
   @Post('update/:id')
   async updateTodo(
     @User('id') userId: number,
-    @Param('id') todoId: string,
+    @Param('id') todoId: number,
     @Body() todoData: { title?: string; description?: string }
   ): Promise<ToDoModel> {
     return this.todosService.updateTodo(userId, todoId, todoData);
@@ -47,7 +47,7 @@ export class TodosController {
   @Post('changeState/:id&:state')
   async changeState(
     @User('id') userId: number,
-    @Param('id') todoId: string,
+    @Param('id') todoId: number,
     @Param('state') state: TodoState
   ): Promise<ToDoModel> {
     return this.todosService.changeState(userId, todoId, state);
@@ -56,7 +56,7 @@ export class TodosController {
   @Delete(':id')
   async removeTodo(
     @User('id') userId: number,
-    @Param('id') todoId: string
+    @Param('id') todoId: number
   ): Promise<ToDoModel> {
     return this.todosService.removeTodo(userId, todoId);
   }
