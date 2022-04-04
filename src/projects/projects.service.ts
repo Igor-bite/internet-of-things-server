@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Project } from "../project.interface";
+import { Project } from "./project.interface";
 
 @Injectable()
 export default class ProjectsService {
