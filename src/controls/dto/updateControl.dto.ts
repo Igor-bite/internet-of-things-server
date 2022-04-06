@@ -1,11 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEnum, IsInt, IsNumber, IsOptional, IsString } from "class-validator";
-
-enum ControlType {
-  SWITCH = 'SWITCH',
-  BUTTON = 'BUTTON',
-  SLIDER = 'SLIDER',
-}
+import { ControlType } from "./createControl.dto";
 
 export default class UpdateControlDto {
   @ApiProperty({

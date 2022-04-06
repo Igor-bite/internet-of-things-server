@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEnum, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
-enum ControlType {
+export enum ControlType {
   SWITCH = 'SWITCH',
   BUTTON = 'BUTTON',
   SLIDER = 'SLIDER',
