@@ -44,34 +44,3 @@ export default class CreateDisplayDto {
   @IsInt()
   readonly deviceId: number;
 }
-
-/*
-export default class CreateDeviceDto {
-  @ApiProperty({
-    description: 'Name of the display'
-  })
-  @IsNotEmpty()
-  @IsString()
-  readonly name: string;
-
-  @ApiProperty({
-    description: 'Microco'
-  })
-  @IsOptional()
-  @IsString()
-  readonly microcontrollerName?: string;
-
-  @ApiProperty({
-    description: 'Initial value'
-  })
-  @IsOptional()
-  @IsDate()
-  readonly lastSeen?: Date;
-
-  @ApiProperty({
-    description: 'Minimum value'
-  })
-  @IsOptional()
-  @IsInt()
-  readonly notifyAfter?: number;
-}*/

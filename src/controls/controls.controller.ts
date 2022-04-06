@@ -35,7 +35,7 @@ export default class ControlsController {
   }
 
   @Post(':id/update')
-  async updateTodo(
+  async updateControl(
     @User('id') userId: number,
     @Param('id') controlId: number,
     @Body() controlData: UpdateControlDto
@@ -44,7 +44,7 @@ export default class ControlsController {
   }
 
   @Delete(':id')
-  async removeTodo(
+  async removeControl(
     @User('id') userId: number,
     @Param('id') controlId: number
   ) {
