@@ -2,9 +2,7 @@ import { Get, Post, Delete, Param, Controller, Body } from "@nestjs/common";
 import TodosService from './todos.service';
 import { User } from '../decorators/user.decorator'
 import { ToDo as ToDoModel, TodoState } from '@prisma/client';
-import {
-  ApiBearerAuth, ApiTags,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UpdateTodoDto } from "./dto/updateTodo.dto";
 import { CreateTodoDto } from "./dto/createTodo.dto";
 
