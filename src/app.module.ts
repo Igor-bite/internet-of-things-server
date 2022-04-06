@@ -9,6 +9,9 @@ import { ApiModule } from "./api/api.module";
 import { TodosModule } from './todos/todos.module';
 import { ControlsModule } from './controls/controls.module';
 import { NewsModule } from './news/news.module';
+import { UsersModule } from "./users/users.module";
+import { DevicesModule } from "./devices/devices.module";
+import { DisplaysModule } from "./displays/displays.module";
 
 @Module({
   imports: [ConfigModule.forRoot(),
@@ -23,7 +26,10 @@ import { NewsModule } from './news/news.module';
             ),
             TodosModule,
             ControlsModule,
-            NewsModule
+            DisplaysModule,
+            NewsModule,
+            UsersModule,
+            DevicesModule
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -31,6 +37,9 @@ import { NewsModule } from './news/news.module';
             PricesModule,
             TodosModule,
             ControlsModule,
-            NewsModule]
+            DisplaysModule,
+            NewsModule,
+            UsersModule,
+            DevicesModule]
 })
 export class AppModule {}
