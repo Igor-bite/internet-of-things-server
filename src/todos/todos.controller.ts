@@ -2,7 +2,7 @@ import { Get, Post, Delete, Param, Controller, Body, Put } from "@nestjs/common"
 import TodosService from './todos.service';
 import { User } from '../decorators/user.decorator'
 import { ToDo as ToDoModel, TodoState } from '@prisma/client';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { UpdateTodoDto } from "./dto/updateTodo.dto";
 import { CreateTodoDto } from "./dto/createTodo.dto";
 
@@ -13,6 +13,10 @@ export default class TodosController {
   constructor(private readonly todosService: TodosService) {}
 
   @Get()
+  @ApiOkResponse({ description: 'Returned all todos for user' })
+  @ApiResponse({ status: 204, description: 'No todos yet' })
+  @ApiResponse({ status: 304, description: 'No changes' })
+  @ApiResponse({ status: 401, description: 'No authorization' })
   async getAllTodos(
     @User('id') userId: number
   ) {
@@ -20,6 +24,10 @@ export default class TodosController {
   }
 
   @Get(':id')
+  @ApiOkResponse({ description: 'Todo found and returned' })
+  @ApiResponse({ status: 304, description: 'No changes' })
+  @ApiResponse({ status: 401, description: 'No authorization' })
+  @ApiResponse({ status: 404, description: 'No todo with this id' })
   async getTodoById(
     @User('id') userId: number,
     @Param('id') todoId: number
@@ -28,6 +36,9 @@ export default class TodosController {
   }
 
   @Post()
+  @ApiResponse({ status: 201, description: 'Created new todo' })
+  @ApiResponse({ status: 400, description: 'The data is not valid for creating' })
+  @ApiResponse({ status: 401, description: 'No authorization' })
   async addTodo(
     @User('id') userId: number,
     @Body() todoData: CreateTodoDto
@@ -36,6 +47,11 @@ export default class TodosController {
   }
 
   @Put(':id')
+  @ApiOkResponse({ description: 'Updated todo' })
+  @ApiResponse({ status: 304, description: 'No changes' })
+  @ApiResponse({ status: 400, description: 'The data is not valid for updating' })
+  @ApiResponse({ status: 401, description: 'No authorization' })
+  @ApiResponse({ status: 404, description: 'No todo with this id' })
   async updateTodo(
     @User('id') userId: number,
     @Param('id') todoId: number,
@@ -44,7 +60,7 @@ export default class TodosController {
     return await this.todosService.updateTodo(userId, todoId, todoData);
   }
 
-  @Get(':id/changeState/:state')
+  @Put(':id/changeState/:state')
   async changeState(
     @User('id') userId: number,
     @Param('id') todoId: number,
@@ -54,6 +70,9 @@ export default class TodosController {
   }
 
   @Delete(':id')
+  @ApiResponse({ status: 204, description: 'Todo was deleted' })
+  @ApiResponse({ status: 401, description: 'No authorization' })
+  @ApiResponse({ status: 404, description: 'No todo with this id' })
   async removeTodo(
     @User('id') userId: number,
     @Param('id') todoId: number

@@ -1,6 +1,6 @@
 import { Controller, Render, Get } from '@nestjs/common';
 import PricesService from './prices.service';
-import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiOkResponse, ApiResponse, ApiTags } from "@nestjs/swagger";
 
 @ApiBearerAuth()
 @ApiTags('prices')
@@ -11,6 +11,8 @@ export default class PricesController {
   ) {}
 
   @Get()
+  @ApiOkResponse({ description: 'Returned prices' })
+  @ApiResponse({ status: 304, description: 'No changes' })
   @Render('prices')
   getPricePlans() {
     return { prices: this.pricesService.getPricePlans() };

@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
 import NewsService from './news.service';
 import { User } from "../decorators/user.decorator";
-import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiOkResponse, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { CreateNewsDto } from "./dto/createNews.dto";
 import UpdateDisplayDto from "../displays/dto/updateDisplay.dto";
 import { UpdateNewsDto } from "./dto/updateNews.dto";
@@ -15,6 +15,10 @@ export default class NewsController {
   ) {}
 
   @Get()
+  @ApiOkResponse({ description: 'Returned all news posts for user' })
+  @ApiResponse({ status: 204, description: 'No news posts yet' })
+  @ApiResponse({ status: 304, description: 'No changes' })
+  @ApiResponse({ status: 401, description: 'No authorization' })
   getAllNews(
     @User('id') userId: number
   ) {
@@ -22,6 +26,10 @@ export default class NewsController {
   }
 
   @Get(':id')
+  @ApiOkResponse({ description: 'News found and returned' })
+  @ApiResponse({ status: 304, description: 'No changes' })
+  @ApiResponse({ status: 401, description: 'No authorization' })
+  @ApiResponse({ status: 404, description: 'No news with this id' })
   getNewsById(
     @User('id') userId: number,
     @Param('id') newsId: number
@@ -30,6 +38,9 @@ export default class NewsController {
   }
 
   @Post()
+  @ApiResponse({ status: 201, description: 'Created new news' })
+  @ApiResponse({ status: 400, description: 'The data is not valid for creating' })
+  @ApiResponse({ status: 401, description: 'No authorization' })
   addNews(
     @User('id') userId: number,
     @Body() newsData: CreateNewsDto
@@ -38,6 +49,11 @@ export default class NewsController {
   }
 
   @Put(':id')
+  @ApiOkResponse({ description: 'Updated news' })
+  @ApiResponse({ status: 304, description: 'No changes' })
+  @ApiResponse({ status: 400, description: 'The data is not valid for updating' })
+  @ApiResponse({ status: 401, description: 'No authorization' })
+  @ApiResponse({ status: 404, description: 'No news with this id' })
   async updateNews(
     @User('id') userId: number,
     @Param('id') newsId: number,
@@ -47,6 +63,9 @@ export default class NewsController {
   }
 
   @Delete(':id')
+  @ApiResponse({ status: 204, description: 'News were deleted' })
+  @ApiResponse({ status: 401, description: 'No authorization' })
+  @ApiResponse({ status: 404, description: 'No news with this id' })
   removeNews(
     @User('id') userId: number,
     @Param('id') newsId: number

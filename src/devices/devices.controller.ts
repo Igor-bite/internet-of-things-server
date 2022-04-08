@@ -1,7 +1,7 @@
 import { Get, Post, Delete, Param, Controller, Body, Put } from "@nestjs/common";
 import DevicesService from './devices.service';
 import { User } from '../decorators/user.decorator';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiResponse, ApiTags } from "@nestjs/swagger";
 import CreateDeviceDto from "./dto/createDevice.dto";
 import UpdateDeviceDto from "./dto/updateDevice.dto";
 
@@ -12,6 +12,10 @@ export default class DevicesController {
   constructor(private readonly devicesService: DevicesService) {}
 
   @Get()
+  @ApiOkResponse({ description: 'Returned all devices for user' })
+  @ApiResponse({ status: 204, description: 'No devices yet' })
+  @ApiResponse({ status: 304, description: 'No changes' })
+  @ApiResponse({ status: 401, description: 'No authorization' })
   async getAllDevices(
     @User('id') userId: number
   ) {
@@ -19,6 +23,10 @@ export default class DevicesController {
   }
 
   @Get(':id')
+  @ApiOkResponse({ description: 'Device found and returned' })
+  @ApiResponse({ status: 304, description: 'No changes' })
+  @ApiResponse({ status: 401, description: 'No authorization' })
+  @ApiResponse({ status: 404, description: 'No device with this id' })
   async getDeviceById(
     @User('id') userId: number,
     @Param('id') deviceId: number
@@ -27,6 +35,9 @@ export default class DevicesController {
   }
 
   @Post()
+  @ApiResponse({ status: 201, description: 'Created new device' })
+  @ApiResponse({ status: 400, description: 'The data is not valid for creating' })
+  @ApiResponse({ status: 401, description: 'No authorization' })
   async addDevice(
     @User('id') userId: number,
     @Body() deviceData: CreateDeviceDto
@@ -35,6 +46,11 @@ export default class DevicesController {
   }
 
   @Put(':id')
+  @ApiOkResponse({ description: 'Updated device' })
+  @ApiResponse({ status: 304, description: 'No changes' })
+  @ApiResponse({ status: 400, description: 'The data is not valid for updating' })
+  @ApiResponse({ status: 401, description: 'No authorization' })
+  @ApiResponse({ status: 404, description: 'No device with this id' })
   async updateDevice(
     @User('id') userId: number,
     @Param('id') deviceId: number,
@@ -44,6 +60,9 @@ export default class DevicesController {
   }
 
   @Delete(':id')
+  @ApiResponse({ status: 204, description: 'Device was deleted' })
+  @ApiResponse({ status: 401, description: 'No authorization' })
+  @ApiResponse({ status: 404, description: 'No device with this id' })
   async removeTodo(
     @User('id') userId: number,
     @Param('id') deviceId: number
