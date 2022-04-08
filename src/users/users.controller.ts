@@ -1,4 +1,4 @@
-import { Get, Post, Delete, Param, Controller, Body } from "@nestjs/common";
+import { Get, Post, Delete, Param, Controller, Body, Put } from "@nestjs/common";
 import UsersService from './users.service';
 import { User } from '../decorators/user.decorator';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
@@ -26,7 +26,7 @@ export default class UsersController {
     return await this.usersService.getUserById(userId, neededUserId);
   }
 
-  @Post('add')
+  @Post()
   async addUser(
     @User('id') userId: number,
     @Body() newUserData: CreateUserDto
@@ -34,7 +34,7 @@ export default class UsersController {
     return await this.usersService.addUser(userId, newUserData);
   }
 
-  @Post(':id/update')
+  @Put(':id')
   async updateUser(
     @User('id') userId: number,
     @Param('id') updatedUserId: number,

@@ -1,4 +1,4 @@
-import { Get, Post, Delete, Param, Controller, Body } from "@nestjs/common";
+import { Get, Post, Delete, Param, Controller, Body, Put } from "@nestjs/common";
 import ControlsService from './controls.service';
 import { User } from '../decorators/user.decorator';
 import CreateControlDto from "./dto/createControl.dto";
@@ -26,7 +26,7 @@ export default class ControlsController {
     return await this.todosService.getControlById(userId, controlId);
   }
 
-  @Post('add')
+  @Post()
   async addControl(
     @User('id') userId: number,
     @Body() controlData: CreateControlDto
@@ -34,7 +34,7 @@ export default class ControlsController {
     return await this.todosService.addControl(userId, controlData);
   }
 
-  @Post(':id/update')
+  @Put(':id')
   async updateControl(
     @User('id') userId: number,
     @Param('id') controlId: number,

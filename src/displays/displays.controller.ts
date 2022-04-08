@@ -1,4 +1,4 @@
-import { Get, Post, Delete, Param, Body, Controller } from "@nestjs/common";
+import { Get, Post, Delete, Param, Body, Controller, Put } from "@nestjs/common";
 import { User } from '../decorators/user.decorator';
 import DisplaysService from "./displays.service";
 import CreateDisplayDto from "./dto/createDisplay.dto";
@@ -26,7 +26,7 @@ export default class DisplaysController {
     return await this.todosService.getDisplayById(userId, displayId);
   }
 
-  @Post('add')
+  @Post()
   async addDisplay(
     @User('id') userId: number,
     @Body() displayData: CreateDisplayDto
@@ -34,7 +34,7 @@ export default class DisplaysController {
     return await this.todosService.addDisplay(userId, displayData);
   }
 
-  @Post(':id/update')
+  @Put(':id')
   async updateTodo(
     @User('id') userId: number,
     @Param('id') displayId: number,

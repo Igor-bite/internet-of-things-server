@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Render, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Render, Get, Param, Post, Put } from "@nestjs/common";
 import ProjectsService from './projects.service';
 import { Project } from "@prisma/client";
 import { CreateProjectDto } from "./dto/createProject.dto";
@@ -30,7 +30,7 @@ export default class ProjectsController {
     return this.projectsService.getProjectById(userId, projectId);
   }
 
-  @Post('add')
+  @Post()
   addProject(
     @User('id') userId: number,
     @Body() projectData: CreateProjectDto
@@ -46,7 +46,7 @@ export default class ProjectsController {
     return this.projectsService.removeProject(userId, projectId);
   }
 
-  @Post(':id/update')
+  @Put(':id')
   updateProject(
     @User('id') userId: number,
     @Param('id') projectId: number,

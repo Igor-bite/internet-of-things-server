@@ -1,4 +1,4 @@
-import { Get, Post, Delete, Param, Controller, Body } from "@nestjs/common";
+import { Get, Post, Delete, Param, Controller, Body, Put } from "@nestjs/common";
 import DevicesService from './devices.service';
 import { User } from '../decorators/user.decorator';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
@@ -26,7 +26,7 @@ export default class DevicesController {
     return await this.devicesService.getDeviceById(userId, deviceId);
   }
 
-  @Post('add')
+  @Post()
   async addDevice(
     @User('id') userId: number,
     @Body() deviceData: CreateDeviceDto
@@ -34,7 +34,7 @@ export default class DevicesController {
     return await this.devicesService.addDevice(userId, deviceData);
   }
 
-  @Post(':id/update')
+  @Put(':id')
   async updateDevice(
     @User('id') userId: number,
     @Param('id') deviceId: number,

@@ -1,9 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
 import NewsService from './news.service';
-import { NewsPost } from "@prisma/client";
 import { User } from "../decorators/user.decorator";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { CreateNewsDto } from "./dto/createNews.dto";
+import UpdateDisplayDto from "../displays/dto/updateDisplay.dto";
+import { UpdateNewsDto } from "./dto/updateNews.dto";
 
 @ApiBearerAuth()
 @ApiTags('news')
@@ -28,12 +29,21 @@ export default class NewsController {
     return this.newsService.getNewsById(userId, newsId);
   }
 
-  @Post('add')
+  @Post()
   addNews(
     @User('id') userId: number,
     @Body() newsData: CreateNewsDto
   ) {
     return this.newsService.addNews(userId, newsData);
+  }
+
+  @Put(':id')
+  async updateNews(
+    @User('id') userId: number,
+    @Param('id') newsId: number,
+    @Body() newsData: UpdateNewsDto
+  ) {
+    return this.newsService.updateNews(userId, newsId, newsData);
   }
 
   @Delete(':id')

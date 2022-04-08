@@ -1,4 +1,4 @@
-import { Get, Post, Delete, Param, Controller, Body } from "@nestjs/common";
+import { Get, Post, Delete, Param, Controller, Body, Put } from "@nestjs/common";
 import TodosService from './todos.service';
 import { User } from '../decorators/user.decorator'
 import { ToDo as ToDoModel, TodoState } from '@prisma/client';
@@ -27,7 +27,7 @@ export default class TodosController {
     return await this.todosService.getTodoById(userId, todoId);
   }
 
-  @Post('add')
+  @Post()
   async addTodo(
     @User('id') userId: number,
     @Body() todoData: CreateTodoDto
@@ -35,7 +35,7 @@ export default class TodosController {
     return await this.todosService.addTodo(userId, todoData);
   }
 
-  @Post(':id/update')
+  @Put(':id')
   async updateTodo(
     @User('id') userId: number,
     @Param('id') todoId: number,
@@ -44,7 +44,7 @@ export default class TodosController {
     return await this.todosService.updateTodo(userId, todoId, todoData);
   }
 
-  @Post(':id/changeState/:state')
+  @Get(':id/changeState/:state')
   async changeState(
     @User('id') userId: number,
     @Param('id') todoId: number,
