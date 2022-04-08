@@ -1,5 +1,5 @@
-import { Get, Controller, Render, Redirect } from "@nestjs/common";
-import ProjectsService from "./projects/services/projects.service";
+import { Get, Controller, Render } from "@nestjs/common";
+import ProjectsService from "./projects/projects.service";
 
 @Controller()
 export class AppController {
@@ -10,6 +10,6 @@ export class AppController {
   @Get()
   @Render('index')
   root() {
-    return {isLogged: false, name: "Igor Klyuzhev"};
+    return { isLogged: false, name: "Igor Klyuzhev" };
   }
 }
