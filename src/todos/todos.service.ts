@@ -21,10 +21,6 @@ export default class TodosService {
     throw new NotImplementedException();
   }
 
-  changeState(userId: number, todoId: number, state: TodoState): Promise<ToDoModel> {
-    throw new NotImplementedException();
-  }
-
   removeTodo(userId: number, todoId: number): Promise<ToDoModel> {
     throw new NotImplementedException();
   }

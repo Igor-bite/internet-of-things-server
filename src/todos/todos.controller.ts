@@ -60,15 +60,6 @@ export default class TodosController {
     return await this.todosService.updateTodo(userId, todoId, todoData);
   }
 
-  @Put(':id/changeState/:state')
-  async changeState(
-    @User('id') userId: number,
-    @Param('id') todoId: number,
-    @Param('state') state: TodoState
-  ) {
-    return await this.todosService.changeState(userId, todoId, state);
-  }
-
   @Delete(':id')
   @ApiResponse({ status: 204, description: 'Todo was deleted' })
   @ApiResponse({ status: 401, description: 'No authorization' })

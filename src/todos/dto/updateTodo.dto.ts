@@ -1,5 +1,10 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsOptional, IsString } from "class-validator";
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
+
+enum TodoState {
+  ACTIVE = 'ACTIVE',
+  COMPLETE = 'COMPLETE',
+}
 
 export class UpdateTodoDto {
   @ApiProperty({
@@ -15,4 +20,14 @@ export class UpdateTodoDto {
   @IsOptional()
   @IsString()
   readonly description?: string;
+
+  @ApiProperty({
+    description: 'State of todo: ACTIVE/COMPLETE'
+  })
+  @IsOptional()
+  @IsEnum({
+    enum: TodoState,
+    enumName: 'TodoState',
+  })
+  readonly state?: TodoState;
 }
