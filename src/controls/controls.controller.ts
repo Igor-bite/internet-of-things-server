@@ -11,7 +11,7 @@ import { ApiBearerAuth, ApiOkResponse, ApiResponse, ApiTags } from "@nestjs/swag
 export default class ControlsController {
   constructor(private readonly controlsService: ControlsService) {}
 
-  @Get()
+  @Get('in:projectId')
   @ApiOkResponse({ description: 'Returned all controls for user' })
   @ApiResponse({ status: 204, description: 'No controls yet' })
   @ApiResponse({ status: 304, description: 'No changes' })

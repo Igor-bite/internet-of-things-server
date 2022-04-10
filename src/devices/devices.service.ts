@@ -1,4 +1,4 @@
-import { Injectable, NotImplementedException } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { Device } from '@prisma/client';
 import CreateDeviceDto from "./dto/createDevice.dto";
 import UpdateDeviceDto from "./dto/updateDevice.dto";
