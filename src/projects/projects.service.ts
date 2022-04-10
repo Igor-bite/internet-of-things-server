@@ -12,7 +12,7 @@ export default class ProjectsService {
   ) {}
 
   async getAllProjects(userId: number): Promise<Project[]> {
-    return await this.prisma.project.findMany({ where: { ownerId: Number(userId) } });
+    return await this.prisma.project.findMany();
   }
 
   async getProjectById(userId: number, projectId: number): Promise<Project> {

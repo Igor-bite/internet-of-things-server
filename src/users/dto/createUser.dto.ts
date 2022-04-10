@@ -30,4 +30,12 @@ export default class CreateUserDto {
   @IsOptional()
   @IsEnum(SubscriptionPlan)
   readonly subscriptionPlan: SubscriptionPlan;
+
+  @ApiProperty({
+    description: 'Password'
+  })
+  @IsNotEmpty()
+  @IsString()
+  readonly password: string;
 }
+

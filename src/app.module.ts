@@ -12,6 +12,7 @@ import { NewsModule } from './news/news.module';
 import { UsersModule } from "./users/users.module";
 import { DevicesModule } from "./devices/devices.module";
 import { DisplaysModule } from "./displays/displays.module";
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [ConfigModule.forRoot(),
@@ -29,7 +30,8 @@ import { DisplaysModule } from "./displays/displays.module";
             DisplaysModule,
             NewsModule,
             UsersModule,
-            DevicesModule
+            DevicesModule,
+            AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -40,6 +42,7 @@ import { DisplaysModule } from "./displays/displays.module";
             DisplaysModule,
             NewsModule,
             UsersModule,
-            DevicesModule]
+            DevicesModule,
+            AuthModule]
 })
 export class AppModule {}
