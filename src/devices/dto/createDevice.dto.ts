@@ -17,13 +17,6 @@ export default class CreateDeviceDto {
   readonly microcontrollerName?: string;
 
   @ApiProperty({
-    description: 'Time last seen online'
-  })
-  @IsOptional()
-  @IsDate()
-  readonly lastSeen?: Date;
-
-  @ApiProperty({
     description: 'Number of seconds, after which server notifies owner of device, which went offline'
   })
   @IsOptional()
