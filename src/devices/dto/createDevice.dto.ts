@@ -17,6 +17,13 @@ export default class CreateDeviceDto {
   readonly microcontrollerName?: string;
 
   @ApiProperty({
+    description: 'Owner of device'
+  })
+  @IsNotEmpty()
+  @IsInt()
+  readonly ownerId: number;
+
+  @ApiProperty({
     description: 'Number of seconds, after which server notifies owner of device, which went offline'
   })
   @IsOptional()
