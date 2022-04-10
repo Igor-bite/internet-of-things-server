@@ -12,6 +12,7 @@ model User {
   id               Int              @id @default(autoincrement())
   createdAt        DateTime         @default(now())
   email            String           @unique
+  passwordHash     String
   name             String?
   surname          String?
   subscriptionPlan SubscriptionPlan @default(NONE)
