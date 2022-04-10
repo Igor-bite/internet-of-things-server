@@ -2,26 +2,31 @@ import { Injectable, NotImplementedException } from "@nestjs/common";
 import { NewsPost } from "@prisma/client";
 import { CreateNewsDto } from "./dto/createNews.dto";
 import { UpdateNewsDto } from "./dto/updateNews.dto";
+import { PrismaService } from "../prisma/prisma.service";
 
 @Injectable()
 export default class NewsService {
-  getAllNews(userId: number): Promise<NewsPost[]> {
-    throw new NotImplementedException();
+  constructor(
+    private readonly prisma: PrismaService
+  ) {}
+
+  async getAllNews(userId: number): Promise<NewsPost[]> {
+    return await this.prisma.newsPost.findMany();
   }
 
-  getNewsById(userId: number, projectId: number): Promise<NewsPost> {
-    throw new NotImplementedException();
+  async getNewsById(userId: number, postId: number): Promise<NewsPost> {
+    return await this.prisma.newsPost.findFirst({ where: { id: Number(postId) }});
   }
 
-  addNews(userId: number, projectData: CreateNewsDto): Promise<NewsPost> {
-    throw new NotImplementedException();
+  async addNews(userId: number, postData: CreateNewsDto): Promise<NewsPost> {
+    return await this.prisma.newsPost.create({ data: postData });
   }
 
-  updateNews(userId: number, newsId: number, newsData: UpdateNewsDto): Promise<NewsPost> {
-    throw new NotImplementedException();
+  async updateNews(userId: number, postId: number, postData: UpdateNewsDto): Promise<NewsPost> {
+    return await this.prisma.newsPost.update({ where: { id: Number(postId) }, data: postData });
   }
 
-  removeNews(userId: number, projectId: number): Promise<NewsPost> {
-    throw new NotImplementedException();
+  async removeNews(userId: number, postId: number): Promise<NewsPost> {
+    return await this.prisma.newsPost.delete({ where: { id: Number(postId) } });
   }
 }
