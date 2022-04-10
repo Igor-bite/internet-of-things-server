@@ -3,7 +3,7 @@ import { IsDate, IsInt, IsNotEmpty, IsOptional, IsString } from "class-validator
 
 export default class CreateDeviceDto {
   @ApiProperty({
-    description: 'Name of the display'
+    description: 'Name of the device'
   })
   @IsNotEmpty()
   @IsString()

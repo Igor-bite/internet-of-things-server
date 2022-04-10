@@ -1,4 +1,4 @@
-import { Injectable, NotImplementedException } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { Control } from '@prisma/client';
 import CreateControlDto from "./dto/createControl.dto";
 import UpdateControlDto from "./dto/updateControl.dto";
@@ -23,10 +23,10 @@ export default class ControlsService {
   }
 
   async updateControl(userId: number, controlId: number, controlData: UpdateControlDto): Promise<Control> {
-    return await this.prisma.control.update({ where: { id: controlId }, data: controlData });
+    return await this.prisma.control.update({ where: { id: Number(controlId) }, data: controlData });
   }
 
   async removeControl(userId: number, controlId: number): Promise<Control> {
-    return await this.prisma.control.delete({ where: { id: controlId } });
+    return await this.prisma.control.delete({ where: { id: Number(controlId) } });
   }
 }

@@ -15,7 +15,7 @@ export default class DevicesService {
   }
 
   async getDeviceById(userId: number, deviceId: number): Promise<Device> {
-    return await this.prisma.device.findFirst({ where: { id: deviceId } });
+    return await this.prisma.device.findFirst({ where: { id: Number(deviceId) } });
   }
 
   async addDevice(userId: number, deviceData: CreateDeviceDto): Promise<Device> {
@@ -23,10 +23,10 @@ export default class DevicesService {
   }
 
   async updateDevice(userId: number, deviceId: number, deviceData: UpdateDeviceDto): Promise<Device> {
-    return await this.prisma.device.update({ where: { id: deviceId }, data: deviceData });
+    return await this.prisma.device.update({ where: { id: Number(deviceId) }, data: deviceData });
   }
 
   async removeDevice(userId: number, deviceId: number): Promise<Device> {
-    return await this.prisma.device.delete({ where: { id: deviceId } });
+    return await this.prisma.device.delete({ where: { id: Number(deviceId) } });
   }
 }
