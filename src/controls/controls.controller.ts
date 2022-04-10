@@ -4,13 +4,12 @@ import { User } from '../decorators/user.decorator';
 import CreateControlDto from "./dto/createControl.dto";
 import UpdateControlDto from "./dto/updateControl.dto";
 import { ApiBearerAuth, ApiOkResponse, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { Project } from '@prisma/client';
 
 @ApiBearerAuth()
 @ApiTags('controls')
 @Controller('controls')
 export default class ControlsController {
-  constructor(private readonly todosService: ControlsService) {}
+  constructor(private readonly controlsService: ControlsService) {}
 
   @Get()
   @ApiOkResponse({ description: 'Returned all controls for user' })
@@ -20,7 +19,7 @@ export default class ControlsController {
   async getAllControls(
     @User('id') userId: number
   ) {
-    return await this.todosService.getAllControls(userId);
+    return await this.controlsService.getAllControls(userId);
   }
 
   @Get(':id')
@@ -32,7 +31,7 @@ export default class ControlsController {
     @User('id') userId: number,
     @Param('id') controlId: number
   ) {
-    return await this.todosService.getControlById(userId, controlId);
+    return await this.controlsService.getControlById(userId, controlId);
   }
 
   @Post()
@@ -43,7 +42,8 @@ export default class ControlsController {
     @User('id') userId: number,
     @Body() controlData: CreateControlDto
   ) {
-    return await this.todosService.addControl(userId, controlData);
+    console.log(controlData);
+    return await this.controlsService.addControl(userId, controlData);
   }
 
   @Put(':id')
@@ -57,7 +57,7 @@ export default class ControlsController {
     @Param('id') controlId: number,
     @Body() controlData: UpdateControlDto
   ) {
-    return await this.todosService.updateControl(userId, controlId, controlData);
+    return await this.controlsService.updateControl(userId, controlId, controlData);
   }
 
   @Delete(':id')
@@ -68,6 +68,6 @@ export default class ControlsController {
     @User('id') userId: number,
     @Param('id') controlId: number
   ) {
-    return await this.todosService.removeControl(userId, controlId);
+    return await this.controlsService.removeControl(userId, controlId);
   }
 }
