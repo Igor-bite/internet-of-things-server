@@ -10,7 +10,9 @@ export class ResponseTimeInterceptor implements NestInterceptor {
       .handle()
       .pipe(
         map(data => {
-          data.timeSpent = Date.now() - now
+          if (data.timeSpent != null) {
+            data.timeSpent = Date.now() - now
+          }
           return data
         })
       );
