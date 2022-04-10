@@ -2,26 +2,31 @@ import { Injectable, NotImplementedException } from "@nestjs/common";
 import { User } from '@prisma/client';
 import CreateUserDto from "./dto/createUser.dto";
 import UpdateUserDto from "./dto/updateUser.dto";
+import { PrismaService } from "../prisma/prisma.service";
 
 @Injectable()
 export default class UsersService {
-  getAllUsers(userId: number): Promise<User[]> {
-    throw new NotImplementedException();
+  constructor(
+    private readonly prisma: PrismaService
+  ) {}
+
+  async getAllUsers(userId: number): Promise<User[]> {
+    return await this.prisma.user.findMany();
   }
 
-  getUserById(userId: number, neededUserId: number): Promise<User> {
-    throw new NotImplementedException();
+  async getUserById(userId: number, neededUserId: number): Promise<User> {
+    return await this.prisma.user.findFirst({ where: { id: Number(neededUserId) }});
   }
 
-  addUser(userId: number, newUserData: CreateUserDto): Promise<User> {
-    throw new NotImplementedException();
+  async addUser(userId: number, newUserData: CreateUserDto): Promise<User> {
+    return await this.prisma.user.create({ data: newUserData });
   }
 
-  updateUser(userId: number, updatedUserId: number, updatedUserData: UpdateUserDto): Promise<User> {
-    throw new NotImplementedException();
+  async updateUser(userId: number, updatedUserId: number, updatedUserData: UpdateUserDto): Promise<User> {
+    return await this.prisma.user.update({ where: { id: Number(updatedUserId) }, data: updatedUserData });
   }
 
-  removeUser(userId: number, removedUserId: number): Promise<User> {
-    throw new NotImplementedException();
+  async removeUser(userId: number, removedUserId: number): Promise<User> {
+    return await this.prisma.user.delete({ where: { id: Number(removedUserId) } });
   }
 }

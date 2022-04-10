@@ -1,12 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
-
-export enum SubscriptionPlan {
-  NONE = 'NONE',
-  PREMIUM = 'PREMIUM',
-  PREMIUM_PRO = 'PREMIUM_PRO',
-  PREMIUM_PRO_PLUS = 'PREMIUM_PRO_PLUS',
-}
+import { SubscriptionPlan } from "@prisma/client";
 
 export default class CreateUserDto {
   @ApiProperty({
@@ -34,9 +28,6 @@ export default class CreateUserDto {
     description: 'Subscription Plan'
   })
   @IsOptional()
-  @IsEnum({
-    enum: SubscriptionPlan,
-    enumName: 'SubscriptionPlan',
-  })
+  @IsEnum(SubscriptionPlan)
   readonly subscriptionPlan: SubscriptionPlan;
 }
