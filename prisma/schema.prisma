@@ -17,6 +17,7 @@ model User {
   subscriptionPlan SubscriptionPlan @default(NONE)
   projects         Project[]        @relation("Projects")
   sharedProjects   Project[]        @relation("SharedProjects")
+  devices          Device[]         @relation("Devices")
   nextPaymentDate  DateTime?
   friends          User[]           @relation("Friends", references: [id])
   friendOf         User[]           @relation("Friends", references: [id])
@@ -110,6 +111,8 @@ model Device {
   id                  Int       @id @default(autoincrement())
   name                String
   microcontrollerName String?
+  owner               User      @relation("Devices", fields: [ownerId], references: [id])
+  ownerId             Int
   connectedControls   Control[] @relation("ConnectedControls")
   connectedDisplays   Display[] @relation("ConnectedDisplays")
   lastSeen            DateTime?
