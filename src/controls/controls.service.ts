@@ -10,8 +10,8 @@ export default class ControlsService {
     private readonly prisma: PrismaService
   ) {}
 
-  async getAllControls(userId: number): Promise<Control[]> {
-    return await this.prisma.control.findMany();
+  async getAllControls(userId: number, projectId: number): Promise<Control[]> {
+    return await this.prisma.control.findMany({ where: { projectId: Number(projectId) } });
   }
 
   async getControlById(userId: number, controlId: number): Promise<Control> {

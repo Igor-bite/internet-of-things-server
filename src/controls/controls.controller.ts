@@ -17,9 +17,10 @@ export default class ControlsController {
   @ApiResponse({ status: 304, description: 'No changes' })
   @ApiResponse({ status: 401, description: 'No authorization' })
   async getAllControls(
-    @User('id') userId: number
+    @User('id') userId: number,
+    @Param('projectId') projectId: number
   ) {
-    return await this.controlsService.getAllControls(userId);
+    return await this.controlsService.getAllControls(userId, projectId);
   }
 
   @Get(':id')
