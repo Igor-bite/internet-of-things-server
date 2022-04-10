@@ -2,26 +2,31 @@ import { Injectable, NotImplementedException } from "@nestjs/common";
 import { ToDo as ToDoModel, TodoState} from '@prisma/client';
 import { CreateTodoDto } from "./dto/createTodo.dto";
 import { UpdateTodoDto } from "./dto/updateTodo.dto";
+import { PrismaService } from "../prisma/prisma.service";
 
 @Injectable()
 export default class TodosService {
-  getAllTodos(userId: number): Promise<ToDoModel[]> {
-    throw new NotImplementedException();
+  constructor(
+    private readonly prisma: PrismaService
+  ) {}
+
+  async getAllTodos(userId: number): Promise<ToDoModel[]> {
+    return await this.prisma.toDo.findMany({ where: { ownerId: Number(userId) } });
   }
 
-  getTodoById(userId: number, todoId: number): Promise<ToDoModel> {
-    throw new NotImplementedException();
+  async getTodoById(userId: number, todoId: number): Promise<ToDoModel> {
+    return await this.prisma.toDo.findFirst({ where: { id: Number(todoId) }});
   }
 
-  addTodo(userId: number, todoData: CreateTodoDto): Promise<ToDoModel> {
-    throw new NotImplementedException();
+  async addTodo(userId: number, todoData: CreateTodoDto): Promise<ToDoModel> {
+    return await this.prisma.toDo.create({ data: todoData });
   }
 
-  updateTodo(userId: number, todoId: number, todoData: UpdateTodoDto): Promise<ToDoModel> {
-    throw new NotImplementedException();
+  async updateTodo(userId: number, todoId: number, todoData: UpdateTodoDto): Promise<ToDoModel> {
+    return await this.prisma.toDo.update({ where: { id: Number(todoId) }, data: todoData });
   }
 
-  removeTodo(userId: number, todoId: number): Promise<ToDoModel> {
-    throw new NotImplementedException();
+  async removeTodo(userId: number, todoId: number): Promise<ToDoModel> {
+    return await this.prisma.toDo.delete({ where: { id: Number(todoId) } });
   }
 }

@@ -1,10 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
-
-enum TodoState {
-  ACTIVE = 'ACTIVE',
-  COMPLETE = 'COMPLETE',
-}
+import { IsEnum, IsOptional, IsString } from "class-validator";
+import { TodoState } from "@prisma/client";
 
 export class UpdateTodoDto {
   @ApiProperty({
@@ -25,9 +21,6 @@ export class UpdateTodoDto {
     description: 'State of todo: ACTIVE/COMPLETE'
   })
   @IsOptional()
-  @IsEnum({
-    enum: TodoState,
-    enumName: 'TodoState',
-  })
+  @IsEnum(TodoState)
   readonly state?: TodoState;
 }
