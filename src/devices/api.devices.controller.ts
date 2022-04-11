@@ -8,7 +8,7 @@ import UpdateDeviceDto from "./dto/updateDevice.dto";
 @ApiBearerAuth()
 @ApiTags('devices')
 @Controller('devices')
-export default class DevicesController {
+export default class ApiDevicesController {
   constructor(private readonly devicesService: DevicesService) {}
 
   @Get()

@@ -9,7 +9,7 @@ import SignInUserDto from "./dto/signInUser.dto";
 @ApiBearerAuth()
 @ApiTags('users')
 @Controller('users')
-export default class UsersController {
+export default class ApiUsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()

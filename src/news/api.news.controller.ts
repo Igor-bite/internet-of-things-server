@@ -3,13 +3,12 @@ import NewsService from './news.service';
 import { User } from "../decorators/user.decorator";
 import { ApiBearerAuth, ApiOkResponse, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { CreateNewsDto } from "./dto/createNews.dto";
-import UpdateDisplayDto from "../displays/dto/updateDisplay.dto";
 import { UpdateNewsDto } from "./dto/updateNews.dto";
 
 @ApiBearerAuth()
 @ApiTags('news')
 @Controller('news')
-export default class NewsController {
+export default class ApiNewsController {
   constructor(
     private readonly newsService: NewsService
   ) {}

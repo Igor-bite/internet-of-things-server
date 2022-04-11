@@ -8,7 +8,7 @@ import { ApiBearerAuth, ApiOkResponse, ApiResponse, ApiTags } from "@nestjs/swag
 @ApiBearerAuth()
 @ApiTags('displays')
 @Controller('displays')
-export default class DisplaysController {
+export default class ApiDisplaysController {
   constructor(private readonly displaysService: DisplaysService) {}
 
   @Get('in:projectId')

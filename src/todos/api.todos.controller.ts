@@ -1,7 +1,6 @@
 import { Get, Post, Delete, Param, Controller, Body, Put } from "@nestjs/common";
 import TodosService from './todos.service';
 import { User } from '../decorators/user.decorator'
-import { ToDo as ToDoModel, TodoState } from '@prisma/client';
 import { ApiBearerAuth, ApiOkResponse, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { UpdateTodoDto } from "./dto/updateTodo.dto";
 import { CreateTodoDto } from "./dto/createTodo.dto";
@@ -9,7 +8,7 @@ import { CreateTodoDto } from "./dto/createTodo.dto";
 @ApiBearerAuth()
 @ApiTags('todos')
 @Controller('todos')
-export default class TodosController {
+export default class ApiTodosController {
   constructor(private readonly todosService: TodosService) {}
 
   @Get()
