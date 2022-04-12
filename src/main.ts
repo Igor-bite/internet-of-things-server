@@ -6,6 +6,8 @@ import { AppModule } from './app.module';
 import { ResponseTimeInterceptor } from "./interceptors/timecalc.interceptor";
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from "@nestjs/common";
+import { HttpExceptionStructureFilter } from "./filters/structure.exception.filter";
+import { PrismaExceptionFilter } from "./filters/prisma.exception.filter";
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(
@@ -14,6 +16,7 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(new ResponseTimeInterceptor());
+  app.useGlobalFilters(new HttpExceptionStructureFilter(), new PrismaExceptionFilter());
   app.useStaticAssets(join(__dirname, '..', 'public'));
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('hbs');

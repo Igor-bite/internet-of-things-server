@@ -1,5 +1,5 @@
-import { Injectable, NotImplementedException } from "@nestjs/common";
-import { User } from '@prisma/client';
+import { Injectable } from "@nestjs/common";
+import { User } from "@prisma/client";
 import CreateUserDto from "./dto/createUser.dto";
 import UpdateUserDto from "./dto/updateUser.dto";
 import { PrismaService } from "../prisma/prisma.service";
@@ -27,7 +27,6 @@ export default class UsersService {
   }
 
   async addUser(userId: number, newUserData: CreateUserDto): Promise<User> {
-    console.log(newUserData);
     return await this.auth.createNewUser(newUserData);
   }
 
