@@ -1,4 +1,4 @@
-import { Controller, Render, Get } from "@nestjs/common";
+import { Controller, Render, Get, Param, ParseIntPipe } from "@nestjs/common";
 import ProjectsService from './projects.service';
 import { User } from "../decorators/user.decorator";
 
@@ -10,9 +10,22 @@ export default class ProjectsController {
 
   @Get()
   @Render('projects')
-  getAllProjects(
+  async getAllProjects(
     @User('id') userId: number
   ) {
-    return { projects: this.projectsService.getAllProjects(userId) };
+    return { projects: await this.projectsService.getAllProjects(userId) };
+  }
+
+  @Get('page=:page')
+  @Render('projects')
+  async getAllProjectsPaged(
+    @User('id') userId: number,
+    @Param('page', ParseIntPipe) page: number
+  ) {
+    return {
+      projects: await this.projectsService.getAllProjectsPaged(userId, page),
+      currentPage: page,
+      pages: await this.projectsService.getNumberOfPages()
+    };
   }
 }

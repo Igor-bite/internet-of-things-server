@@ -18,10 +18,10 @@ export default class ApiNewsController {
   @ApiResponse({ status: 204, description: 'No news posts yet' })
   @ApiResponse({ status: 304, description: 'No changes' })
   @ApiResponse({ status: 401, description: 'No authorization' })
-  getAllNews(
+  async getAllNews(
     @User('id') userId: number
   ) {
-    return this.newsService.getAllNews(userId);
+    return await this.newsService.getAllNews(userId);
   }
 
   @Get(':id')
@@ -29,22 +29,22 @@ export default class ApiNewsController {
   @ApiResponse({ status: 304, description: 'No changes' })
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No news with this id' })
-  getNewsById(
+  async getNewsById(
     @User('id') userId: number,
     @Param('id') newsId: number
   ) {
-    return this.newsService.getNewsById(userId, newsId);
+    return await this.newsService.getNewsById(userId, newsId);
   }
 
   @Post()
   @ApiResponse({ status: 201, description: 'Created new news' })
   @ApiResponse({ status: 400, description: 'The data is not valid for creating' })
   @ApiResponse({ status: 401, description: 'No authorization' })
-  addNews(
+  async addNews(
     @User('id') userId: number,
     @Body() newsData: CreateNewsDto
   ) {
-    return this.newsService.addNews(userId, newsData);
+    return await this.newsService.addNews(userId, newsData);
   }
 
   @Put(':id')
@@ -58,17 +58,17 @@ export default class ApiNewsController {
     @Param('id') newsId: number,
     @Body() newsData: UpdateNewsDto
   ) {
-    return this.newsService.updateNews(userId, newsId, newsData);
+    return await this.newsService.updateNews(userId, newsId, newsData);
   }
 
   @Delete(':id')
   @ApiResponse({ status: 204, description: 'News were deleted' })
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No news with this id' })
-  removeNews(
+  async removeNews(
     @User('id') userId: number,
     @Param('id') newsId: number
   ) {
-    return this.newsService.removeNews(userId, newsId);
+    return await this.newsService.removeNews(userId, newsId);
   }
 }

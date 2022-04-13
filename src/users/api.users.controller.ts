@@ -43,7 +43,6 @@ export default class ApiUsersController {
     @User('id') userId: number,
     @Body() newUserData: CreateUserDto
   ) {
-    console.log(newUserData);
     return await this.usersService.addUser(userId, newUserData);
   }
 

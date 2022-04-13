@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from "@nestjs/common";
 import ProjectsService from './projects.service';
 import { CreateProjectDto } from "./dto/createProject.dto";
 import { UpdateProjectDto } from "./dto/updatePost.dto";
@@ -18,10 +18,22 @@ export default class ApiProjectsController {
   @ApiResponse({ status: 204, description: 'No projects yet' })
   @ApiResponse({ status: 304, description: 'No changes' })
   @ApiResponse({ status: 401, description: 'No authorization' })
-  getAllProjects(
+  async getAllProjects(
     @User('id') userId: number
   ) {
-    return { projects: this.projectsService.getAllProjects(userId) };
+    return { projects: await this.projectsService.getAllProjects(userId) };
+  }
+
+  @Get('page=:page')
+  @ApiOkResponse({ description: 'Returned all projects for user with page' })
+  @ApiResponse({ status: 204, description: 'No projects yet' })
+  @ApiResponse({ status: 304, description: 'No changes' })
+  @ApiResponse({ status: 401, description: 'No authorization' })
+  async getAllProjectsPaged(
+    @User('id') userId: number,
+    @Param('page', ParseIntPipe) page: number
+  ) {
+    return { projects: await this.projectsService.getAllProjectsPaged(userId, page) };
   }
 
   @Get(':id')
@@ -29,33 +41,33 @@ export default class ApiProjectsController {
   @ApiResponse({ status: 304, description: 'No changes' })
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No project with this id' })
-  getProjectById(
+  async getProjectById(
     @User('id') userId: number,
     @Param('id') projectId: number
   ) {
-    return this.projectsService.getProjectById(userId, projectId);
+    return await this.projectsService.getProjectById(userId, projectId);
   }
 
   @Post()
   @ApiResponse({ status: 201, description: 'Created new project' })
   @ApiResponse({ status: 400, description: 'The data is not valid for creating' })
   @ApiResponse({ status: 401, description: 'No authorization' })
-  addProject(
+  async addProject(
     @User('id') userId: number,
     @Body() projectData: CreateProjectDto
   ) {
-    return this.projectsService.addProject(userId, projectData);
+    return await this.projectsService.addProject(userId, projectData);
   }
 
   @Delete(':id')
   @ApiResponse({ status: 204, description: 'Project was deleted' })
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No project with this id' })
-  removeProject(
+  async removeProject(
     @User('id') userId: number,
     @Param('id') projectId: number
   ) {
-    return this.projectsService.removeProject(userId, projectId);
+    return await this.projectsService.removeProject(userId, projectId);
   }
 
   @Put(':id')
@@ -64,22 +76,22 @@ export default class ApiProjectsController {
   @ApiResponse({ status: 400, description: 'The data is not valid for updating' })
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No project with this id' })
-  updateProject(
+  async updateProject(
     @User('id') userId: number,
     @Param('id') projectId: number,
     @Body() projectData: UpdateProjectDto
   ) {
-    return this.projectsService.updateProject(userId, projectId, projectData);
+    return await this.projectsService.updateProject(userId, projectId, projectData);
   }
 
   @Get(':id/share')
   @ApiOkResponse({ description: 'Shared project' })
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No project with this id' })
-  shareProject(
+  async shareProject(
     @User('id') userId: number,
     @Param('id') projectId: number
   ) {
-    return this.projectsService.shareProject(userId, projectId);
+    return await this.projectsService.shareProject(userId, projectId);
   }
 }

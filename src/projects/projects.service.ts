@@ -10,9 +10,28 @@ export default class ProjectsService {
   constructor(
     private readonly prisma: PrismaService
   ) {}
+  private readonly projectsOnPage = 3;
 
   async getAllProjects(userId: number): Promise<Project[]> {
-    return await this.prisma.project.findMany();
+    return await this.prisma.project.findMany( {
+      orderBy: {
+        id: 'asc'
+      }
+    });
+  }
+
+  async getAllProjectsPaged(userId: number, page: number): Promise<Project[]> {
+    return await this.prisma.project.findMany({
+      skip: this.projectsOnPage * (page - 1),
+      take: this.projectsOnPage,
+      orderBy: {
+        id: 'asc'
+      }
+    })
+  }
+
+  async getNumberOfPages(): Promise<number> {
+    return await this.prisma.project.count() / this.projectsOnPage;
   }
 
   async getProjectById(userId: number, projectId: number): Promise<Project> {

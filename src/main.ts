@@ -28,6 +28,15 @@ async function bootstrap() {
   hbs.registerHelper('isdefined', function (value) {
     return value !== undefined;
   });
+  hbs.registerHelper('isEqual', function (value1, value2) {
+    return value1 === value2;
+  });
+  hbs.registerHelper('moreThan', function (value1, value2) {
+    return value1 > value2;
+  });
+  hbs.registerHelper('lessThan', function (value1, value2) {
+    return value1 < value2;
+  });
 
   const config = new DocumentBuilder()
     .setTitle('IoT Server API')
