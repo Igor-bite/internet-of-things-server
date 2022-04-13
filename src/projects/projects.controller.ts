@@ -10,10 +10,8 @@ export default class ProjectsController {
 
   @Get()
   @Render('projects')
-  async getAllProjects(
-    @User('id') userId: number
-  ) {
-    return { projects: await this.projectsService.getAllProjects(userId) };
+  async getAllProjects(@User('id') userId: number) {
+    return await this.getAllProjectsPaged(userId, 1);
   }
 
   @Get('page=:page')

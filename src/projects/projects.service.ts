@@ -10,7 +10,7 @@ export default class ProjectsService {
   constructor(
     private readonly prisma: PrismaService
   ) {}
-  private readonly projectsOnPage = 3;
+  private readonly projectsOnPage = 4;
 
   async getAllProjects(userId: number): Promise<Project[]> {
     return await this.prisma.project.findMany( {
