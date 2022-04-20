@@ -29,11 +29,11 @@ export default class ApiProjectsController {
   @ApiResponse({ status: 204, description: 'No projects yet' })
   @ApiResponse({ status: 304, description: 'No changes' })
   @ApiResponse({ status: 401, description: 'No authorization' })
-  async getAllProjectsPaged(
+  async getProjectsPaged(
     @User('id') userId: number,
     @Param('page', ParseIntPipe) page: number
   ) {
-    return { projects: await this.projectsService.getAllProjectsPaged(userId, page) };
+    return { projects: await this.projectsService.getProjectsPaged(userId, page) };
   }
 
   @Get(':id')

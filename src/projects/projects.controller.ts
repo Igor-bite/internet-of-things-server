@@ -21,7 +21,7 @@ export default class ProjectsController {
     @Param('page', ParseIntPipe) page: number
   ) {
     return {
-      projects: await this.projectsService.getAllProjectsPaged(userId, page),
+      projects: await this.projectsService.getProjectsPaged(userId, page),
       currentPage: page,
       pages: await this.projectsService.getNumberOfPages()
     };

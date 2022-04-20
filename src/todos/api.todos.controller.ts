@@ -1,4 +1,4 @@
-import { Get, Post, Delete, Param, Controller, Body, Put } from "@nestjs/common";
+import { Get, Post, Delete, Param, Controller, Body, Put, ParseIntPipe } from "@nestjs/common";
 import TodosService from './todos.service';
 import { User } from '../decorators/user.decorator'
 import { ApiBearerAuth, ApiOkResponse, ApiResponse, ApiTags } from "@nestjs/swagger";
@@ -20,6 +20,18 @@ export default class ApiTodosController {
     @User('id') userId: number
   ) {
     return await this.todosService.getAllTodos(userId);
+  }
+
+  @Get('page=:page')
+  @ApiOkResponse({ description: 'Returned all todos for user with page' })
+  @ApiResponse({ status: 204, description: 'No todos yet' })
+  @ApiResponse({ status: 304, description: 'No changes' })
+  @ApiResponse({ status: 401, description: 'No authorization' })
+  async getProjectsPaged(
+    @User('id') userId: number,
+    @Param('page', ParseIntPipe) page: number
+  ) {
+    return { projects: await this.todosService.getTodosPaged(userId, page) };
   }
 
   @Get(':id')

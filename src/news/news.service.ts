@@ -1,5 +1,5 @@
 import { Injectable, NotImplementedException } from "@nestjs/common";
-import { NewsPost } from "@prisma/client";
+import { NewsPost, Project } from "@prisma/client";
 import { CreateNewsDto } from "./dto/createNews.dto";
 import { UpdateNewsDto } from "./dto/updateNews.dto";
 import { PrismaService } from "../prisma/prisma.service";
@@ -12,6 +12,16 @@ export default class NewsService {
 
   async getAllNews(userId: number): Promise<NewsPost[]> {
     return await this.prisma.newsPost.findMany();
+  }
+
+  async getNewsPaged(userId: number, page: number, newsOnPage: number = 4): Promise<NewsPost[]> {
+    return await this.prisma.newsPost.findMany({
+      skip: newsOnPage * (page - 1),
+      take: newsOnPage,
+      orderBy: {
+        id: 'asc'
+      }
+    })
   }
 
   async getNewsById(userId: number, postId: number): Promise<NewsPost> {

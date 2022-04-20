@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from "@nestjs/common";
 import NewsService from './news.service';
 import { User } from "../decorators/user.decorator";
 import { ApiBearerAuth, ApiOkResponse, ApiResponse, ApiTags } from "@nestjs/swagger";
@@ -22,6 +22,18 @@ export default class ApiNewsController {
     @User('id') userId: number
   ) {
     return await this.newsService.getAllNews(userId);
+  }
+
+  @Get('page=:page')
+  @ApiOkResponse({ description: 'Returned news posts for user with page' })
+  @ApiResponse({ status: 204, description: 'No news yet' })
+  @ApiResponse({ status: 304, description: 'No changes' })
+  @ApiResponse({ status: 401, description: 'No authorization' })
+  async getNewsPaged(
+    @User('id') userId: number,
+    @Param('page', ParseIntPipe) page: number
+  ) {
+    return { projects: await this.newsService.getNewsPaged(userId, page) };
   }
 
   @Get(':id')

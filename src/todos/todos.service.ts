@@ -1,5 +1,5 @@
 import { Injectable, NotImplementedException } from "@nestjs/common";
-import { ToDo as ToDoModel, TodoState} from '@prisma/client';
+import { Project, ToDo as ToDoModel, TodoState } from "@prisma/client";
 import { CreateTodoDto } from "./dto/createTodo.dto";
 import { UpdateTodoDto } from "./dto/updateTodo.dto";
 import { PrismaService } from "../prisma/prisma.service";
@@ -12,6 +12,19 @@ export default class TodosService {
 
   async getAllTodos(userId: number): Promise<ToDoModel[]> {
     return await this.prisma.toDo.findMany({ where: { ownerId: Number(userId) } });
+  }
+
+  async getTodosPaged(userId: number, page: number, todosOnPage: number = 4): Promise<ToDoModel[]> {
+    return await this.prisma.toDo.findMany({
+      where: {
+        ownerId: Number(userId)
+      },
+      skip: todosOnPage * (page - 1),
+      take: todosOnPage,
+      orderBy: {
+        id: 'asc'
+      }
+    })
   }
 
   async getTodoById(userId: number, todoId: number): Promise<ToDoModel> {
