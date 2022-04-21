@@ -29,6 +29,21 @@ function addNewProject() {
                     "                                <div class=\"project_header\">"  + json.author + "</div>\n" +
                     "                                <img src=https://picsum.photos/id/" + json.id + "/800/500>\n" +
                     "                            </div>"
+
+                let xhr = new XMLHttpRequest();
+                const site = new URL(document.location).origin
+                xhr.open("POST", site + "/api/projects");
+
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+
+                let data = `{
+                  "title": "${json.author}",
+                  "ownerId": 4,
+                  "backgroundImageUrl": "https://picsum.photos/id/${json.id}/800/500"
+                }`;
+
+                xhr.send(data);
             }, getRandomInt(1, 3) * 1000)
         })
         .catch(() => {

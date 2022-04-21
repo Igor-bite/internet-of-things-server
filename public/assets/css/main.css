@@ -176,7 +176,7 @@ img{
     transition: all 0.5s ease;
 }
 
-.add_cell {
+.add_cell, .next_page, .previous_page {
     min-width: 400px;
     flex: 1;
     background-color: gray;
@@ -194,7 +194,7 @@ img{
     transition: all 0.5s ease;
 }
 
-.add_cell b {
+.add_cell b, .next_page b, .previous_page b {
     font-size: 40px;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
@@ -207,7 +207,7 @@ img{
     text-align: center;
 }
 
-.add_cell b:hover {
+.add_cell b:hover, .next_page b:hover, .previous_page b:hover {
     font-size: 100px;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;

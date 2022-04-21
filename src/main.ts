@@ -37,6 +37,12 @@ async function bootstrap() {
   hbs.registerHelper('lessThan', function (value1, value2) {
     return value1 < value2;
   });
+  hbs.registerHelper('incremented', function (value) {
+    return value + 1;
+  });
+  hbs.registerHelper('decremented', function (value) {
+    return value - 1;
+  });
 
   const config = new DocumentBuilder()
     .setTitle('IoT Server API')
