@@ -27,7 +27,7 @@ export default class ApiTodosController {
   @ApiResponse({ status: 204, description: 'No todos yet' })
   @ApiResponse({ status: 304, description: 'No changes' })
   @ApiResponse({ status: 401, description: 'No authorization' })
-  async getProjectsPaged(
+  async getTodosPaged(
     @User('id') userId: number,
     @Param('page', ParseIntPipe) page: number
   ) {
