@@ -1,9 +1,9 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query } from "@nestjs/common";
 import ProjectsService from './projects.service';
 import { CreateProjectDto } from "./dto/createProject.dto";
 import { UpdateProjectDto } from "./dto/updatePost.dto";
 import { User } from "../decorators/user.decorator";
-import { ApiBearerAuth, ApiOkResponse, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiOkResponse, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
 
 @ApiBearerAuth()
 @ApiTags('projects')
@@ -14,25 +14,24 @@ export default class ApiProjectsController {
   ) {}
 
   @Get()
-  @ApiOkResponse({ description: 'Returned all projects for user' })
-  @ApiResponse({ status: 204, description: 'No projects yet' })
-  @ApiResponse({ status: 304, description: 'No changes' })
-  @ApiResponse({ status: 401, description: 'No authorization' })
-  async getAllProjects(
-    @User('id') userId: number
-  ) {
-    return { projects: await this.projectsService.getAllProjects(userId) };
-  }
-
-  @Get('page=:page')
   @ApiOkResponse({ description: 'Returned all projects for user with page' })
   @ApiResponse({ status: 204, description: 'No projects yet' })
   @ApiResponse({ status: 304, description: 'No changes' })
   @ApiResponse({ status: 401, description: 'No authorization' })
+  @ApiQuery({
+    name: "page",
+    type: Number,
+    description: "Page number of showing projects. If not presented, returns all projects",
+    required: false
+  })
   async getProjectsPaged(
     @User('id') userId: number,
-    @Param('page', ParseIntPipe) page: number
+    @Query('page') page?: number
   ) {
+    if (!page) {
+      return { project: await this.projectsService.getAllProjects(userId) }
+    }
+    page = Number(page)
     return { projects: await this.projectsService.getProjectsPaged(userId, page) };
   }
 

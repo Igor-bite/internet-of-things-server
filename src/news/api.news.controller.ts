@@ -1,7 +1,7 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query } from "@nestjs/common";
 import NewsService from './news.service';
 import { User } from "../decorators/user.decorator";
-import { ApiBearerAuth, ApiOkResponse, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiOkResponse, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { CreateNewsDto } from "./dto/createNews.dto";
 import { UpdateNewsDto } from "./dto/updateNews.dto";
 
@@ -14,26 +14,25 @@ export default class ApiNewsController {
   ) {}
 
   @Get()
-  @ApiOkResponse({ description: 'Returned all news posts for user' })
-  @ApiResponse({ status: 204, description: 'No news posts yet' })
-  @ApiResponse({ status: 304, description: 'No changes' })
-  @ApiResponse({ status: 401, description: 'No authorization' })
-  async getAllNews(
-    @User('id') userId: number
-  ) {
-    return await this.newsService.getAllNews(userId);
-  }
-
-  @Get('page=:page')
   @ApiOkResponse({ description: 'Returned news posts for user with page' })
   @ApiResponse({ status: 204, description: 'No news yet' })
   @ApiResponse({ status: 304, description: 'No changes' })
   @ApiResponse({ status: 401, description: 'No authorization' })
+  @ApiQuery({
+    name: "page",
+    type: Number,
+    description: "Page number of returned news posts. If not presented, returns all news",
+    required: false
+  })
   async getNewsPaged(
     @User('id') userId: number,
-    @Param('page', ParseIntPipe) page: number
+    @Query('page') page?: number
   ) {
-    return { projects: await this.newsService.getNewsPaged(userId, page) };
+    if (!page) {
+      return { news: await this.newsService.getNewsPaged(userId, page) };
+    }
+    page = Number(page)
+    return { news: await this.newsService.getNewsPaged(userId, page) };
   }
 
   @Get(':id')

@@ -1,6 +1,7 @@
-import { Controller, Render, Get, Param, ParseIntPipe } from "@nestjs/common";
+import { Controller, Render, Get, Param, ParseIntPipe, Query } from "@nestjs/common";
 import ProjectsService from './projects.service';
 import { User } from "../decorators/user.decorator";
+import { ApiQuery } from "@nestjs/swagger";
 
 @Controller('projects')
 export default class ProjectsController {
@@ -10,16 +11,20 @@ export default class ProjectsController {
 
   @Get()
   @Render('projects')
-  async getAllProjects(@User('id') userId: number) {
-    return await this.getAllProjectsPaged(userId, 1);
-  }
-
-  @Get('page=:page')
-  @Render('projects')
+  @ApiQuery({
+    name: "page",
+    type: Number,
+    description: "Page number of showing projects. If not presented, returns first page",
+    required: false
+  })
   async getAllProjectsPaged(
     @User('id') userId: number,
-    @Param('page', ParseIntPipe) page: number
+    @Query('page') page?: number
   ) {
+    page = Number(page)
+    if (!page) {
+      page = 1
+    }
     return {
       projects: await this.projectsService.getProjectsPaged(userId, page),
       currentPage: page,

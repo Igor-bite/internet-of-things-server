@@ -1,7 +1,7 @@
-import { Get, Post, Delete, Param, Controller, Body, Put, ParseIntPipe } from "@nestjs/common";
+import { Get, Post, Delete, Param, Controller, Body, Put, ParseIntPipe, Query } from "@nestjs/common";
 import TodosService from './todos.service';
 import { User } from '../decorators/user.decorator'
-import { ApiBearerAuth, ApiOkResponse, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiOkResponse, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { UpdateTodoDto } from "./dto/updateTodo.dto";
 import { CreateTodoDto } from "./dto/createTodo.dto";
 
@@ -12,26 +12,25 @@ export default class ApiTodosController {
   constructor(private readonly todosService: TodosService) {}
 
   @Get()
-  @ApiOkResponse({ description: 'Returned all todos for user' })
-  @ApiResponse({ status: 204, description: 'No todos yet' })
-  @ApiResponse({ status: 304, description: 'No changes' })
-  @ApiResponse({ status: 401, description: 'No authorization' })
-  async getAllTodos(
-    @User('id') userId: number
-  ) {
-    return await this.todosService.getAllTodos(userId);
-  }
-
-  @Get('page=:page')
   @ApiOkResponse({ description: 'Returned all todos for user with page' })
   @ApiResponse({ status: 204, description: 'No todos yet' })
   @ApiResponse({ status: 304, description: 'No changes' })
   @ApiResponse({ status: 401, description: 'No authorization' })
+  @ApiQuery({
+    name: "page",
+    type: Number,
+    description: "Page number of returned Todos. If not presented, returns all todos",
+    required: false
+  })
   async getTodosPaged(
     @User('id') userId: number,
-    @Param('page', ParseIntPipe) page: number
+    @Query('page') page: number
   ) {
-    return { projects: await this.todosService.getTodosPaged(userId, page) };
+    if (!page) {
+      return { todos: await this.todosService.getAllTodos(userId) };
+    }
+    page = Number(page)
+    return { todos: await this.todosService.getTodosPaged(userId, page) };
   }
 
   @Get(':id')

@@ -19,11 +19,9 @@
                         </article>
                         <div class="projects_container">
                           {{#unless (isEqual currentPage 1) }}
-                            {{#unless (isEqual pages 1) }}
-                              <div class="previous_page">
-                                <b onclick="goToPage({{decremented currentPage}})"> <- </b>
-                              </div>
-                            {{/unless}}
+                            <div class="previous_page">
+                              <b onclick="goToPage({{decremented currentPage}})"> <- </b>
+                            </div>
                           {{/unless}}
                           {{#each projects}}
                             <div class="project_cell">
