@@ -10,8 +10,12 @@ export default class DisplaysService {
     private readonly prisma: PrismaService
   ) {}
 
-  async getAllDisplays(userId: number, projectId: number): Promise<Display[]> {
-    return await this.prisma.display.findMany({ where: { projectId: Number(projectId) } });
+  async getAllDisplays(userId: number): Promise<Display[]> {
+    return await this.prisma.display.findMany();
+  }
+
+  async getDisplaysInProject(userId: number, projectId: number): Promise<Display[]> {
+    return await this.prisma.display.findMany({ where: { id: Number(projectId) } });
   }
 
   async getDisplayById(userId: number, displayId: number): Promise<Display> {

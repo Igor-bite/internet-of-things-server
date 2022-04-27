@@ -4,13 +4,17 @@ import { CreateProjectDto } from "./dto/createProject.dto";
 import { UpdateProjectDto } from "./dto/updatePost.dto";
 import { User } from "../decorators/user.decorator";
 import { ApiBearerAuth, ApiOkResponse, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
+import ControlsService from "../controls/controls.service";
+import DisplaysService from "../displays/displays.service";
 
 @ApiBearerAuth()
 @ApiTags('projects')
 @Controller('projects')
 export default class ApiProjectsController {
   constructor(
-    private readonly projectsService: ProjectsService
+    private readonly projectsService: ProjectsService,
+    private readonly controlsService: ControlsService,
+    private readonly displaysService: DisplaysService
   ) {}
 
   @Get()
@@ -45,6 +49,30 @@ export default class ApiProjectsController {
     @Param('id') projectId: number
   ) {
     return await this.projectsService.getProjectById(userId, projectId);
+  }
+
+  @Get(':id/controls')
+  @ApiOkResponse({ description: 'Project found and returned' })
+  @ApiResponse({ status: 304, description: 'No changes' })
+  @ApiResponse({ status: 401, description: 'No authorization' })
+  @ApiResponse({ status: 404, description: 'No project with this id' })
+  async getControlsInProject(
+    @User('id') userId: number,
+    @Param('id') projectId: number
+  ) {
+    return await this.controlsService.getControlsInProject(userId, projectId);
+  }
+
+  @Get(':id/displays')
+  @ApiOkResponse({ description: 'Project found and returned' })
+  @ApiResponse({ status: 304, description: 'No changes' })
+  @ApiResponse({ status: 401, description: 'No authorization' })
+  @ApiResponse({ status: 404, description: 'No project with this id' })
+  async getDisplaysInProject(
+    @User('id') userId: number,
+    @Param('id') projectId: number
+  ) {
+    return await this.displaysService.getDisplaysInProject(userId, projectId);
   }
 
   @Post()

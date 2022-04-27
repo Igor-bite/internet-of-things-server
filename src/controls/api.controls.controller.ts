@@ -11,16 +11,15 @@ import { ApiBearerAuth, ApiOkResponse, ApiResponse, ApiTags } from "@nestjs/swag
 export default class ApiControlsController {
   constructor(private readonly controlsService: ControlsService) {}
 
-  @Get('in:projectId')
+  @Get()
   @ApiOkResponse({ description: 'Returned all controls for user' })
   @ApiResponse({ status: 204, description: 'No controls yet' })
   @ApiResponse({ status: 304, description: 'No changes' })
   @ApiResponse({ status: 401, description: 'No authorization' })
   async getAllControls(
-    @User('id') userId: number,
-    @Param('projectId') projectId: number
+    @User('id') userId: number
   ) {
-    return await this.controlsService.getAllControls(userId, projectId);
+    return await this.controlsService.getAllControls(userId);
   }
 
   @Get(':id')

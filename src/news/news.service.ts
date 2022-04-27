@@ -28,6 +28,16 @@ export default class NewsService {
     return await this.prisma.newsPost.findFirst({ where: { id: Number(postId) }});
   }
 
+  async getRandomNewsPost(userId: number): Promise<NewsPost> {
+    const min = 0;
+    const max = await this.prisma.newsPost.count() - 1;
+    const skip = Math.floor(Math.random() * (max - min + 1) + min)
+    return (await this.prisma.newsPost.findMany({
+      take: 1,
+      skip: skip,
+    }))[0];
+  }
+
   async addNews(userId: number, postData: CreateNewsDto): Promise<NewsPost> {
     return await this.prisma.newsPost.create({ data: postData });
   }

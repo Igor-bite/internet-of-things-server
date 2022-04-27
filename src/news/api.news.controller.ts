@@ -29,7 +29,7 @@ export default class ApiNewsController {
     @Query('page') page?: number
   ) {
     if (!page) {
-      return { news: await this.newsService.getNewsPaged(userId, page) };
+      return { news: await this.newsService.getAllNews(userId) };
     }
     page = Number(page)
     return { news: await this.newsService.getNewsPaged(userId, page) };

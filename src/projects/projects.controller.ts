@@ -2,11 +2,13 @@ import { Controller, Render, Get, Param, ParseIntPipe, Query } from "@nestjs/com
 import ProjectsService from './projects.service';
 import { User } from "../decorators/user.decorator";
 import { ApiQuery } from "@nestjs/swagger";
+import NewsService from "../news/news.service";
 
 @Controller('projects')
 export default class ProjectsController {
   constructor(
-    private readonly projectsService: ProjectsService
+    private readonly projectsService: ProjectsService,
+    private readonly newsService: NewsService
   ) {}
 
   @Get()
@@ -25,10 +27,15 @@ export default class ProjectsController {
     if (!page) {
       page = 1
     }
+    const pages = await this.projectsService.getNumberOfPages();
+    if (page > pages) {
+      page = pages
+    }
     return {
       projects: await this.projectsService.getProjectsPaged(userId, page),
       currentPage: page,
-      pages: await this.projectsService.getNumberOfPages()
+      pages: pages,
+      news: await this.newsService.getRandomNewsPost(userId)
     };
   }
 }
