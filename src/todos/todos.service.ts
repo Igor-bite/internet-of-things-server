@@ -11,6 +11,7 @@ export default class TodosService {
   ) {}
 
   async getAllTodos(userId: number): Promise<ToDoModel[]> {
+    userId = 4
     return await this.prisma.toDo.findMany({ where: { ownerId: Number(userId) } });
   }
 

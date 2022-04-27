@@ -3,12 +3,14 @@ import ProjectsService from './projects.service';
 import { User } from "../decorators/user.decorator";
 import { ApiQuery } from "@nestjs/swagger";
 import NewsService from "../news/news.service";
+import TodosService from "../todos/todos.service";
 
 @Controller('projects')
 export default class ProjectsController {
   constructor(
     private readonly projectsService: ProjectsService,
-    private readonly newsService: NewsService
+    private readonly newsService: NewsService,
+    private readonly todosService: TodosService
   ) {}
 
   @Get()
@@ -35,7 +37,8 @@ export default class ProjectsController {
       projects: await this.projectsService.getProjectsPaged(userId, page),
       currentPage: page,
       pages: pages,
-      news: await this.newsService.getRandomNewsPost(userId)
+      news: await this.newsService.getRandomNewsPost(userId),
+      todos: await this.todosService.getAllTodos(userId)
     };
   }
 }

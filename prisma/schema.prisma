@@ -48,7 +48,8 @@ model ToDo {
 
 enum TodoState {
   ACTIVE
-  COMPLETE
+  COMPLETED
+  DELETED
 }
 
 model Project {

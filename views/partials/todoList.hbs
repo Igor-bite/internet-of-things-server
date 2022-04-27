@@ -1,5 +1,5 @@
 <section id="todo__list">
-  <h3 class="important" onclick="todo.delete()"> ToDo list </h3>
+  <h3 class="important"> ToDo list </h3>
   <div class="todo">
     <form id="add_form" class="todo__input">
       <input id="todo_text_input" class="todo__text" type="text" size="30" value="">
@@ -10,6 +10,21 @@
       <option value="completed">завершённые</option>
       <option value="deleted">удалённые</option>
     </select>
-    <ul class="todo__items" data-todo-option="active"></ul>
+    <ul class="todo__items" data-todo-option="active">
+      {{#each todos}}
+        {{#if (isEqual this.state "ACTIVE")}}
+        <li class="todo__item" data-todo-state="active" data-todo-id="{{this.id}}">
+        {{else if (isEqual this.state "COMPLETED")}}
+        <li class="todo__item" data-todo-state="completed" data-todo-id="{{this.id}}">
+        {{else}}
+        <li class="todo__item" data-todo-state="deleted" data-todo-id="{{this.id}}">
+        {{/if}}
+          <span class="todo__task"> {{this.title}} </span>
+          <span class="todo__action todo__action_restore" data-todo-action="active"></span>
+          <span class="todo__action todo__action_complete" data-todo-action="completed"></span>
+          <span class="todo__action todo__action_delete" data-todo-action="deleted"></span>
+        </li>
+      {{/each}}
+    </ul>
   </div>
 </section>
