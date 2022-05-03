@@ -39,7 +39,7 @@ function addNewProject() {
 
                 let data = `{
                   "title": "${json.author}",
-                  "ownerId": 4,
+                  "ownerId": 7,
                   "backgroundImageUrl": "https://picsum.photos/id/${json.id}/800/500"
                 }`;
 

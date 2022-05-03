@@ -20,6 +20,10 @@ export default class ProjectsService {
   }
 
   async getProjectsPaged(userId: number, page: number, projectsOnPage: number = 4): Promise<Project[]> {
+    const projectsCount = await this.prisma.project.count();
+    if (projectsCount <= projectsOnPage) {
+      return await this.prisma.project.findMany();
+    }
     return await this.prisma.project.findMany({
       skip: projectsOnPage * (page - 1),
       take: projectsOnPage,

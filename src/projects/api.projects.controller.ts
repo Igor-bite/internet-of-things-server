@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, UseGuards } from "@nestjs/common";
 import ProjectsService from './projects.service';
 import { CreateProjectDto } from "./dto/createProject.dto";
 import { UpdateProjectDto } from "./dto/updatePost.dto";
@@ -6,6 +6,7 @@ import { User } from "../decorators/user.decorator";
 import { ApiBearerAuth, ApiOkResponse, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
 import ControlsService from "../controls/controls.service";
 import DisplaysService from "../displays/displays.service";
+import { AuthGuard } from "../auth/auth.guard";
 
 @ApiBearerAuth()
 @ApiTags('projects')

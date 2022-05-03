@@ -7,7 +7,6 @@ import { DisplaysModule } from "../displays/displays.module";
 import { NewsModule } from "../news/news.module";
 import { UsersModule } from "../users/users.module";
 import { DevicesModule } from "../devices/devices.module";
-import { AuthModule } from "../auth/auth.module";
 import ApiPricesController from "../prices/api.prices.controller";
 import ApiNewsController from "../news/api.news.controller";
 import ApiDevicesController from "../devices/api.devices.controller";
@@ -16,6 +15,8 @@ import ApiUsersController from "../users/api.users.controller";
 import ApiControlsController from "../controls/api.controls.controller";
 import ApiDisplaysController from "../displays/api.displays.controller";
 import ApiProjectsController from "../projects/api.projects.controller";
+import ApiAuthController from "../auth/api.auth.controller";
+import { HttpModule } from "@nestjs/axios";
 
 @Module({
   imports: [
@@ -27,7 +28,7 @@ import ApiProjectsController from "../projects/api.projects.controller";
     NewsModule,
     UsersModule,
     DevicesModule,
-    AuthModule
+    HttpModule
   ],
   controllers: [
     ApiPricesController,
@@ -37,7 +38,8 @@ import ApiProjectsController from "../projects/api.projects.controller";
     ApiUsersController,
     ApiControlsController,
     ApiDisplaysController,
-    ApiDevicesController
+    ApiDevicesController,
+    ApiAuthController
   ]
 })
 export class ApiModule {}

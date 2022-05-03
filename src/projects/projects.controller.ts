@@ -1,9 +1,12 @@
-import { Controller, Render, Get, Param, ParseIntPipe, Query } from "@nestjs/common";
+import { Controller, Render, Get, Param, ParseIntPipe, Query, UseGuards } from "@nestjs/common";
 import ProjectsService from './projects.service';
 import { User } from "../decorators/user.decorator";
 import { ApiQuery } from "@nestjs/swagger";
 import NewsService from "../news/news.service";
 import TodosService from "../todos/todos.service";
+import { AuthGuard } from "../auth/auth.guard";
+import { Session } from "../auth/session.decorator";
+import { SessionContainer } from "supertokens-node/lib/build/recipe/session/faunadb";
 
 @Controller('projects')
 export default class ProjectsController {
@@ -21,10 +24,13 @@ export default class ProjectsController {
     description: "Page number of showing projects. If not presented, returns first page",
     required: false
   })
+  @UseGuards(AuthGuard)
   async getAllProjectsPaged(
+    @Session() session: SessionContainer,
     @User('id') userId: number,
     @Query('page') page?: number
   ) {
+    console.log(userId)
     page = Number(page)
     if (!page) {
       page = 1

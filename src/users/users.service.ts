@@ -3,14 +3,11 @@ import { User } from "@prisma/client";
 import CreateUserDto from "./dto/createUser.dto";
 import UpdateUserDto from "./dto/updateUser.dto";
 import { PrismaService } from "../prisma/prisma.service";
-import { AuthService } from "../auth/auth.service";
-import SignInUserDto from "./dto/signInUser.dto";
 
 @Injectable()
 export default class UsersService {
   constructor(
-    private readonly prisma: PrismaService,
-    private readonly auth: AuthService
+    private readonly prisma: PrismaService
   ) {}
 
   async getAllUsers(userId: number): Promise<User[]> {
@@ -21,13 +18,12 @@ export default class UsersService {
     return await this.prisma.user.findFirst({ where: { id: Number(neededUserId) }});
   }
 
-  async authenticateUserByEmail(userData: SignInUserDto): Promise<Boolean> {
-    let user = await this.prisma.user.findUnique({ where: { email: userData.email }});
-    return this.auth.validateUser(user, userData.password);
+  async getUserBySupertokenId(neededUserId: string): Promise<User> {
+    return await this.prisma.user.findFirst({ where: { supertokenId: neededUserId }});
   }
 
   async addUser(userId: number, newUserData: CreateUserDto): Promise<User> {
-    return await this.auth.createNewUser(newUserData);
+    return await this.prisma.user.create({ data: newUserData });
   }
 
   async updateUser(userId: number, updatedUserId: number, updatedUserData: UpdateUserDto): Promise<User> {

@@ -46,15 +46,6 @@ export default class ApiUsersController {
     return await this.usersService.addUser(userId, newUserData);
   }
 
-  @Post('login')
-  @ApiResponse({ status: 200, description: 'Logged in' })
-  async signInUser(
-    @User('id') userId: number,
-    @Body() userData: SignInUserDto
-  ) {
-    return await this.usersService.authenticateUserByEmail(userData);
-  }
-
   @Put(':id')
   @ApiOkResponse({ description: 'Updated user' })
   @ApiResponse({ status: 304, description: 'No changes' })
