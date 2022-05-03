@@ -1,5 +1,5 @@
 async function sign_in_up() {
-  const response = await fetch(process.env.API_DOMAIN + process.env.API_BASE_PATH + "/authorisationurl?thirdPartyId=github",
+  const response = await fetch(document.location.origin + "/api/auth" + "/authorisationurl?thirdPartyId=github",
     {
       method: "GET",
       headers: {
@@ -9,7 +9,7 @@ async function sign_in_up() {
   );
   const url = (await response.json()).url
   let urlObj = new URL(url);
-  urlObj.searchParams.append("redirect_uri", process.env.API_DOMAIN + process.env.API_BASE_PATH + process.env.GITHUB_CALLBACK_PATH);
+  urlObj.searchParams.append("redirect_uri", document.location.origin + "/api/auth" + "/callback/github");
 
   window.location.href = urlObj.toString();
 }

@@ -5,7 +5,6 @@ export const SupertokenUserId = createParamDecorator(
   (data: string, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
     const session = request.session;
-
     return session?.["userId"];
   },
 );
@@ -14,7 +13,10 @@ export const SupertokenUserId = createParamDecorator(
 export class UserFromSupertokenId implements PipeTransform {
   constructor(private readonly usersService: UsersService) {}
 
-  transform(value: any, metadata: ArgumentMetadata) {
-    return this.usersService.getUserBySupertokenId(value);
+  async transform(value: any, metadata: ArgumentMetadata) {
+    if (value == undefined) {
+      return undefined;
+    }
+    return await this.usersService.getUserBySupertokenId(value);
   }
 }
