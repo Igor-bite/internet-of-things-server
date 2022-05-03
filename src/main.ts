@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import * as hbs from 'hbs';
+import supertokens from 'supertokens-node';
 import { AppModule } from './app.module';
 import { ResponseTimeInterceptor } from "./interceptors/timecalc.interceptor";
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
@@ -9,6 +10,7 @@ import { ValidationPipe } from "@nestjs/common";
 import { HttpExceptionStructureFilter } from "./filters/structure.exception.filter";
 import { PrismaExceptionFilter } from "./filters/prisma.exception.filter";
 import helmet from 'helmet';
+import { SupertokensExceptionFilter } from "./auth/auth.filter";
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(
@@ -18,6 +20,13 @@ async function bootstrap() {
     contentSecurityPolicy: false,
     crossOriginEmbedderPolicy: false
   }));
+
+  app.enableCors({
+    origin: ['http://localhost:3000'],
+    allowedHeaders: ['content-type', ...supertokens.getAllCORSHeaders()],
+    credentials: true,
+  });
+  app.useGlobalFilters(new SupertokensExceptionFilter());
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(new ResponseTimeInterceptor());
   app.useGlobalFilters(new HttpExceptionStructureFilter(), new PrismaExceptionFilter());
