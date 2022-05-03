@@ -3,11 +3,11 @@
     <h3 class="logo">Corner of <span>IoT</span></h3>
     {{#if (isdefined isLogged)}}
       {{#if isLogged}}
-        <h2> Your logged in! </h2>
+        <h2> You are logged in! </h2>
       {{else}}
         <div>
-          <a href="projects"><button class="custom-btn btn-16">Sign In</button></a>
-          <a style="margin-left: 10px" href="prices"><button class="custom-btn btn-16">Sign Up</button></a>
+          <button class="custom-btn btn-16" onclick="sign_in_up()">Sign In</button>
+          <button style="margin-left: 10px" class="custom-btn btn-16" onclick="sign_in_up()">Sign Up</button>
         </div>
       {{/if}}
     {{/if}}
