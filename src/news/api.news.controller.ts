@@ -1,28 +1,38 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query } from "@nestjs/common";
 import NewsService from './news.service';
 import { User } from "../decorators/user.decorator";
-import { ApiBearerAuth, ApiOkResponse, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiOkResponse, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { CreateNewsDto } from "./dto/createNews.dto";
-import UpdateDisplayDto from "../displays/dto/updateDisplay.dto";
 import { UpdateNewsDto } from "./dto/updateNews.dto";
 
 @ApiBearerAuth()
 @ApiTags('news')
 @Controller('news')
-export default class NewsController {
+export default class ApiNewsController {
   constructor(
     private readonly newsService: NewsService
   ) {}
 
   @Get()
-  @ApiOkResponse({ description: 'Returned all news posts for user' })
-  @ApiResponse({ status: 204, description: 'No news posts yet' })
+  @ApiOkResponse({ description: 'Returned news posts for user with page' })
+  @ApiResponse({ status: 204, description: 'No news yet' })
   @ApiResponse({ status: 304, description: 'No changes' })
   @ApiResponse({ status: 401, description: 'No authorization' })
-  getAllNews(
-    @User('id') userId: number
+  @ApiQuery({
+    name: "page",
+    type: Number,
+    description: "Page number of returned news posts. If not presented, returns all news",
+    required: false
+  })
+  async getNewsPaged(
+    @User('id') userId: number,
+    @Query('page') page?: number
   ) {
-    return this.newsService.getAllNews(userId);
+    if (!page) {
+      return { news: await this.newsService.getAllNews(userId) };
+    }
+    page = Number(page)
+    return { news: await this.newsService.getNewsPaged(userId, page) };
   }
 
   @Get(':id')
@@ -30,22 +40,22 @@ export default class NewsController {
   @ApiResponse({ status: 304, description: 'No changes' })
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No news with this id' })
-  getNewsById(
+  async getNewsById(
     @User('id') userId: number,
     @Param('id') newsId: number
   ) {
-    return this.newsService.getNewsById(userId, newsId);
+    return await this.newsService.getNewsById(userId, newsId);
   }
 
   @Post()
   @ApiResponse({ status: 201, description: 'Created new news' })
   @ApiResponse({ status: 400, description: 'The data is not valid for creating' })
   @ApiResponse({ status: 401, description: 'No authorization' })
-  addNews(
+  async addNews(
     @User('id') userId: number,
     @Body() newsData: CreateNewsDto
   ) {
-    return this.newsService.addNews(userId, newsData);
+    return await this.newsService.addNews(userId, newsData);
   }
 
   @Put(':id')
@@ -59,17 +69,17 @@ export default class NewsController {
     @Param('id') newsId: number,
     @Body() newsData: UpdateNewsDto
   ) {
-    return this.newsService.updateNews(userId, newsId, newsData);
+    return await this.newsService.updateNews(userId, newsId, newsData);
   }
 
   @Delete(':id')
   @ApiResponse({ status: 204, description: 'News were deleted' })
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No news with this id' })
-  removeNews(
+  async removeNews(
     @User('id') userId: number,
     @Param('id') newsId: number
   ) {
-    return this.newsService.removeNews(userId, newsId);
+    return await this.newsService.removeNews(userId, newsId);
   }
 }

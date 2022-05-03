@@ -1,27 +1,46 @@
 import { Injectable, NotImplementedException } from "@nestjs/common";
-import { ToDo as ToDoModel, TodoState} from '@prisma/client';
+import { Project, ToDo as ToDoModel, TodoState } from "@prisma/client";
 import { CreateTodoDto } from "./dto/createTodo.dto";
 import { UpdateTodoDto } from "./dto/updateTodo.dto";
+import { PrismaService } from "../prisma/prisma.service";
 
 @Injectable()
 export default class TodosService {
-  getAllTodos(userId: number): Promise<ToDoModel[]> {
-    throw new NotImplementedException();
+  constructor(
+    private readonly prisma: PrismaService
+  ) {}
+
+  async getAllTodos(userId: number): Promise<ToDoModel[]> {
+    userId = 4
+    return await this.prisma.toDo.findMany({ where: { ownerId: Number(userId) } });
   }
 
-  getTodoById(userId: number, todoId: number): Promise<ToDoModel> {
-    throw new NotImplementedException();
+  async getTodosPaged(userId: number, page: number, todosOnPage: number = 4): Promise<ToDoModel[]> {
+    return await this.prisma.toDo.findMany({
+      where: {
+        ownerId: Number(userId)
+      },
+      skip: todosOnPage * (page - 1),
+      take: todosOnPage,
+      orderBy: {
+        id: 'asc'
+      }
+    })
   }
 
-  addTodo(userId: number, todoData: CreateTodoDto): Promise<ToDoModel> {
-    throw new NotImplementedException();
+  async getTodoById(userId: number, todoId: number): Promise<ToDoModel> {
+    return await this.prisma.toDo.findFirst({ where: { id: Number(todoId) }});
   }
 
-  updateTodo(userId: number, todoId: number, todoData: UpdateTodoDto): Promise<ToDoModel> {
-    throw new NotImplementedException();
+  async addTodo(userId: number, todoData: CreateTodoDto): Promise<ToDoModel> {
+    return await this.prisma.toDo.create({ data: todoData });
   }
 
-  removeTodo(userId: number, todoId: number): Promise<ToDoModel> {
-    throw new NotImplementedException();
+  async updateTodo(userId: number, todoId: number, todoData: UpdateTodoDto): Promise<ToDoModel> {
+    return await this.prisma.toDo.update({ where: { id: Number(todoId) }, data: todoData });
+  }
+
+  async removeTodo(userId: number, todoId: number): Promise<ToDoModel> {
+    return await this.prisma.toDo.delete({ where: { id: Number(todoId) } });
   }
 }

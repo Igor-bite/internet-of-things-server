@@ -12,11 +12,13 @@ model User {
   id               Int              @id @default(autoincrement())
   createdAt        DateTime         @default(now())
   email            String           @unique
+  passwordHash     String
   name             String?
   surname          String?
   subscriptionPlan SubscriptionPlan @default(NONE)
   projects         Project[]        @relation("Projects")
   sharedProjects   Project[]        @relation("SharedProjects")
+  devices          Device[]         @relation("Devices")
   nextPaymentDate  DateTime?
   friends          User[]           @relation("Friends", references: [id])
   friendOf         User[]           @relation("Friends", references: [id])
@@ -46,7 +48,8 @@ model ToDo {
 
 enum TodoState {
   ACTIVE
-  COMPLETE
+  COMPLETED
+  DELETED
 }
 
 model Project {
@@ -110,6 +113,8 @@ model Device {
   id                  Int       @id @default(autoincrement())
   name                String
   microcontrollerName String?
+  owner               User      @relation("Devices", fields: [ownerId], references: [id])
+  ownerId             Int
   connectedControls   Control[] @relation("ConnectedControls")
   connectedDisplays   Display[] @relation("ConnectedDisplays")
   lastSeen            DateTime?

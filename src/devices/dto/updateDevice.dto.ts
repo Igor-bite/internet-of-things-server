@@ -3,28 +3,21 @@ import { IsDate, IsInt, IsOptional, IsString } from "class-validator";
 
 export default class UpdateDeviceDto {
   @ApiProperty({
-    description: 'Name of the display'
+    description: 'Name of the device'
   })
   @IsOptional()
   @IsString()
   readonly name: string;
 
   @ApiProperty({
-    description: 'Microco'
+    description: 'Microcontroller name'
   })
   @IsOptional()
   @IsString()
   readonly microcontrollerName?: string;
 
   @ApiProperty({
-    description: 'Initial value'
-  })
-  @IsOptional()
-  @IsDate()
-  readonly lastSeen?: Date;
-
-  @ApiProperty({
-    description: 'Minimum value'
+    description: 'Number of seconds, after which server notifies owner of device, which went offline'
   })
   @IsOptional()
   @IsInt()

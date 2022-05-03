@@ -3,7 +3,7 @@ import { IsDate, IsInt, IsNotEmpty, IsOptional, IsString } from "class-validator
 
 export default class CreateDeviceDto {
   @ApiProperty({
-    description: 'Name of the display'
+    description: 'Name of the device'
   })
   @IsNotEmpty()
   @IsString()
@@ -17,11 +17,11 @@ export default class CreateDeviceDto {
   readonly microcontrollerName?: string;
 
   @ApiProperty({
-    description: 'Time last seen online'
+    description: 'Owner of device'
   })
-  @IsOptional()
-  @IsDate()
-  readonly lastSeen?: Date;
+  @IsNotEmpty()
+  @IsInt()
+  readonly ownerId: number;
 
   @ApiProperty({
     description: 'Number of seconds, after which server notifies owner of device, which went offline'

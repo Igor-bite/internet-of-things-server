@@ -6,20 +6,42 @@ import { AppModule } from './app.module';
 import { ResponseTimeInterceptor } from "./interceptors/timecalc.interceptor";
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from "@nestjs/common";
+import { HttpExceptionStructureFilter } from "./filters/structure.exception.filter";
+import { PrismaExceptionFilter } from "./filters/prisma.exception.filter";
+import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(
-    AppModule,
+    AppModule
   );
-
+  app.use(helmet({
+    contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false
+  }));
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(new ResponseTimeInterceptor());
+  app.useGlobalFilters(new HttpExceptionStructureFilter(), new PrismaExceptionFilter());
   app.useStaticAssets(join(__dirname, '..', 'public'));
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('hbs');
   hbs.registerPartials(join(__dirname, '..', '/views/partials'));
   hbs.registerHelper('isdefined', function (value) {
     return value !== undefined;
+  });
+  hbs.registerHelper('isEqual', function (value1, value2) {
+    return value1 === value2;
+  });
+  hbs.registerHelper('moreThan', function (value1, value2) {
+    return value1 > value2;
+  });
+  hbs.registerHelper('lessThan', function (value1, value2) {
+    return value1 < value2;
+  });
+  hbs.registerHelper('incremented', function (value) {
+    return value + 1;
+  });
+  hbs.registerHelper('decremented', function (value) {
+    return value - 1;
   });
 
   const config = new DocumentBuilder()

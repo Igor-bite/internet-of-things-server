@@ -7,18 +7,74 @@ function handleForm(event) {
 }
 form.addEventListener('submit', handleForm);
 
-var todo = {
+const todo = {
     action: function action(e) {
-        var target = e.target;
+        const target = e.target;
+
         if (target.classList.contains("todo__action")) {
-            var action = target.dataset.todoAction;
-            var elemItem = target.closest(".todo__item");
-            if (action === "deleted" && elemItem.dataset.todoState === "deleted") {
-                elemItem.remove();
-            } else {
-                elemItem.dataset.todoState = action;
+            const action = target.dataset.todoAction;
+            const elemItem = target.closest(".todo__item");
+            const state = elemItem.dataset.todoState
+            const id = elemItem.dataset.todoId
+            if (action === "completed" && state === "active") {
+                let xhr = new XMLHttpRequest();
+                const site = new URL(document.location).origin
+                xhr.open("PUT", site + "/api/todos/" + id, true);
+
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Content-Type", "application/json");
+
+                let data = `{
+                        "state": "COMPLETED"
+                     }`;
+                xhr.send(data);
+
+                elemItem.dataset.todoState = action
             }
-            this.save();
+            if (action === "deleted") {
+                if (state === "deleted") {
+                    let xhr = new XMLHttpRequest();
+                    const site = new URL(document.location).origin
+                    xhr.open("DELETE", site + "/api/todos/" + id, true);
+
+                    xhr.setRequestHeader("Accept", "application/json");
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                    xhr.send(null);
+
+                    elemItem.remove()
+                } else {
+                    let xhr = new XMLHttpRequest();
+                    const site = new URL(document.location).origin
+                    xhr.open("PUT", site + "/api/todos/" + id, true);
+
+                    xhr.setRequestHeader("Accept", "application/json");
+                    xhr.setRequestHeader("Content-Type", "application/json");
+
+                    let data = `{
+                        "state": "DELETED"
+                     }`;
+                    xhr.send(data);
+
+                    elemItem.dataset.todoState = action
+                }
+            }
+            if (action === "active") {
+                if (state !== "active") {
+                    let xhr = new XMLHttpRequest();
+                    const site = new URL(document.location).origin
+                    xhr.open("PUT", site + "/api/todos/" + id, true);
+
+                    xhr.setRequestHeader("Accept", "application/json");
+                    xhr.setRequestHeader("Content-Type", "application/json");
+
+                    let data = `{
+                        "state": "ACTIVE"
+                     }`;
+                    xhr.send(data);
+
+                    elemItem.dataset.todoState = action
+                }
+            }
         }
     },
 
@@ -27,43 +83,41 @@ var todo = {
         if (elemText.disabled || !elemText.value.length) {
             return;
         }
-        document.querySelector(".todo__items").insertAdjacentHTML("afterBegin", this.create(elemText.value));
+        const title = elemText.value;
+
+        let xhr = new XMLHttpRequest();
+        const site = new URL(document.location).origin
+        xhr.open("POST", site + "/api/todos", true);
+
+        xhr.setRequestHeader("Accept", "application/json");
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        let data = `{
+                        "title": "${title}",
+                        "ownerId": 4
+                     }`;
+
+        xhr.responseType = 'json';
+        xhr.onload  = function() {
+            const jsonResponse = xhr.response;
+            const buildHtml = function create(title, id) {
+                  return '<li class="todo__item" data-todo-state="active" data-todo-id=\"'.concat(id, '\"><span class="todo__task">',
+                    title, '</span><span class="todo__action todo__action_restore" data-todo-action="active"></span><span class="todo__action todo__action_complete" data-todo-action="completed"></span><span class="todo__action todo__action_delete" data-todo-action="deleted"></span></li>');
+              };
+            document.querySelector(".todo__items").insertAdjacentHTML("afterBegin", buildHtml(jsonResponse.title, jsonResponse.id));
+            document.getElementById("todo_text_input").focus();
+        };
+        xhr.send(data);
         elemText.value = "";
-        this.save();
-        document.getElementById("todo_text_input").focus();
-    },
-    create: function create(text) {
-        return '<li class="todo__item" data-todo-state="active"><span class="todo__task">'.concat(
-            text, '</span><span class="todo__action todo__action_restore" data-todo-action="active"></span><span class="todo__action todo__action_complete" data-todo-action="completed"></span><span class="todo__action todo__action_delete" data-todo-action="deleted"></span></li>');
     },
     init: function() {
-        var fromStorage = localStorage.getItem("todo");
-        if (fromStorage) {
-            document.querySelector(".todo__items").innerHTML = fromStorage;
-        }
         document.querySelector(".todo__options").addEventListener("change", this.update);
         document.addEventListener("click", this.action.bind(this));
     },
     update: function() {
-        var option = document.querySelector(".todo__options").value;
+        const option = document.querySelector(".todo__options").value;
         document.querySelector(".todo__items").dataset.todoOption = option;
         document.querySelector(".todo__text").disabled = option !== "active";
-    },
-    delete: function () {
-        localStorage.removeItem("todo");
-        document.querySelector(".todo__items").innerHTML = ""
-    },
-    save: function() {
-        try {
-            localStorage.setItem(
-                "todo",
-                document.querySelector(".todo__items").innerHTML
-            );
-        } catch (e) {
-            if (e == QUOTA_EXCEEDED_ERR) {
-                alert("Превышен лимит по памяти")
-            }
-        }
     }
 };
 todo.init();

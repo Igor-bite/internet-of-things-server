@@ -4,11 +4,12 @@ import { User } from '../decorators/user.decorator';
 import { ApiBearerAuth, ApiOkResponse, ApiResponse, ApiTags } from "@nestjs/swagger";
 import CreateUserDto from "./dto/createUser.dto";
 import UpdateUserDto from "./dto/updateUser.dto";
+import SignInUserDto from "./dto/signInUser.dto";
 
 @ApiBearerAuth()
 @ApiTags('users')
 @Controller('users')
-export default class UsersController {
+export default class ApiUsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
@@ -43,6 +44,15 @@ export default class UsersController {
     @Body() newUserData: CreateUserDto
   ) {
     return await this.usersService.addUser(userId, newUserData);
+  }
+
+  @Post('login')
+  @ApiResponse({ status: 200, description: 'Logged in' })
+  async signInUser(
+    @User('id') userId: number,
+    @Body() userData: SignInUserDto
+  ) {
+    return await this.usersService.authenticateUserByEmail(userData);
   }
 
   @Put(':id')

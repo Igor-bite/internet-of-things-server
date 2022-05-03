@@ -1,27 +1,32 @@
-import { Injectable, NotImplementedException } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { Device } from '@prisma/client';
 import CreateDeviceDto from "./dto/createDevice.dto";
 import UpdateDeviceDto from "./dto/updateDevice.dto";
+import { PrismaService } from "../prisma/prisma.service";
 
 @Injectable()
 export default class DevicesService {
-  getAllDevices(userId: number): Promise<Device[]> {
-    throw new NotImplementedException();
+  constructor(
+    private readonly prisma: PrismaService
+  ) {}
+
+  async getAllDevices(userId: number): Promise<Device[]> {
+    return await this.prisma.device.findMany();
   }
 
-  getDeviceById(userId: number, deviceId: number): Promise<Device> {
-    throw new NotImplementedException();
+  async getDeviceById(userId: number, deviceId: number): Promise<Device> {
+    return await this.prisma.device.findFirst({ where: { id: Number(deviceId) } });
   }
 
-  addDevice(userId: number, deviceData: CreateDeviceDto): Promise<Device> {
-    throw new NotImplementedException();
+  async addDevice(userId: number, deviceData: CreateDeviceDto): Promise<Device> {
+    return await this.prisma.device.create({ data: deviceData });
   }
 
-  updateDevice(userId: number, deviceId: number, deviceData: UpdateDeviceDto): Promise<Device> {
-    throw new NotImplementedException();
+  async updateDevice(userId: number, deviceId: number, deviceData: UpdateDeviceDto): Promise<Device> {
+    return await this.prisma.device.update({ where: { id: Number(deviceId) }, data: deviceData });
   }
 
-  removeDevice(userId: number, deviceId: number): Promise<Device> {
-    throw new NotImplementedException();
+  async removeDevice(userId: number, deviceId: number): Promise<Device> {
+    return await this.prisma.device.delete({ where: { id: Number(deviceId) } });
   }
 }

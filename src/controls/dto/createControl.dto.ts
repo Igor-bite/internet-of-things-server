@@ -1,21 +1,13 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEnum, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
-
-export enum ControlType {
-  SWITCH = 'SWITCH',
-  BUTTON = 'BUTTON',
-  SLIDER = 'SLIDER',
-}
+import { ControlType } from "@prisma/client"
 
 export default class CreateControlDto {
   @ApiProperty({
     description: 'Control type: SWITCH/BUTTON/SLIDER'
   })
   @IsNotEmpty()
-  @IsEnum({
-    enum: ControlType,
-    enumName: 'ControlType',
-  })
+  @IsEnum(ControlType)
   readonly type: ControlType;
 
   @ApiProperty({

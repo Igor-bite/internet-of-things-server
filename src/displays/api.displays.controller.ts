@@ -8,8 +8,8 @@ import { ApiBearerAuth, ApiOkResponse, ApiResponse, ApiTags } from "@nestjs/swag
 @ApiBearerAuth()
 @ApiTags('displays')
 @Controller('displays')
-export default class DisplaysController {
-  constructor(private readonly todosService: DisplaysService) {}
+export default class ApiDisplaysController {
+  constructor(private readonly displaysService: DisplaysService) {}
 
   @Get()
   @ApiOkResponse({ description: 'Returned all displays for user' })
@@ -19,7 +19,7 @@ export default class DisplaysController {
   async getAllDisplays(
     @User('id') userId: number
   ) {
-    return await this.todosService.getAllDisplays(userId);
+    return await this.displaysService.getAllDisplays(userId);
   }
 
   @Get(':id')
@@ -31,7 +31,7 @@ export default class DisplaysController {
     @User('id') userId: number,
     @Param('id') displayId: number
   ) {
-    return await this.todosService.getDisplayById(userId, displayId);
+    return await this.displaysService.getDisplayById(userId, displayId);
   }
 
   @Post()
@@ -42,7 +42,7 @@ export default class DisplaysController {
     @User('id') userId: number,
     @Body() displayData: CreateDisplayDto
   ) {
-    return await this.todosService.addDisplay(userId, displayData);
+    return await this.displaysService.addDisplay(userId, displayData);
   }
 
   @Put(':id')
@@ -56,7 +56,7 @@ export default class DisplaysController {
     @Param('id') displayId: number,
     @Body() displayData: UpdateDisplayDto
   ) {
-    return await this.todosService.updateDisplay(userId, displayId, displayData);
+    return await this.displaysService.updateDisplay(userId, displayId, displayData);
   }
 
   @Delete(':id')
@@ -67,6 +67,6 @@ export default class DisplaysController {
     @User('id') userId: number,
     @Param('id') displayId: number
   ) {
-    return await this.todosService.removeDisplay(userId, displayId);
+    return await this.displaysService.removeDisplay(userId, displayId);
   }
 }

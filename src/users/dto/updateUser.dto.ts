@@ -1,13 +1,13 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEnum, IsOptional, IsString } from "class-validator";
-import { SubscriptionPlan } from "./createUser.dto";
+import { IsEmail, IsEnum, IsOptional, IsString } from "class-validator";
+import { SubscriptionPlan } from "@prisma/client";
 
 export default class UpdateUserDto {
   @ApiProperty({
     description: 'User\'s email'
   })
   @IsOptional()
-  @IsString()
+  @IsEmail()
   readonly email?: string;
 
   @ApiProperty({
@@ -28,9 +28,6 @@ export default class UpdateUserDto {
     description: 'Subscription Plan'
   })
   @IsOptional()
-  @IsEnum({
-    enum: SubscriptionPlan,
-    enumName: 'SubscriptionPlan',
-  })
+  @IsEnum(SubscriptionPlan)
   readonly subscriptionPlan: SubscriptionPlan;
 }

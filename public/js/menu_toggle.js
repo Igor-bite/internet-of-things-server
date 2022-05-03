@@ -34,19 +34,18 @@ function changeActiveTo(active) {
 function change() {
     const site_location = new URL(document.location).pathname
 
-    if (site_location === "/projects") {
+    if (site_location.includes("projects")) {
         changeActiveTo("your_projects");
-    }
-    if (site_location === "/") {
+    } else if (site_location.includes("prices")) {
+        changeActiveTo("prices");
+    } else {
         changeActiveTo("home");
     }
-    if (site_location === "/prices") {
-        changeActiveTo("prices");
-    }
-    // if (site_location === "/account") {
+
+    // if (site_location.includes("account")) {
     //     changeActiveTo("account");
     // }
-    // if (site_location === "/contacts") {
+    // if (site_location.includes("contacts")) {
     //     changeActiveTo("contacts");
     // }
 }

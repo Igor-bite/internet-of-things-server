@@ -1,27 +1,36 @@
-import { Injectable, NotImplementedException } from "@nestjs/common";
-import { Control } from '@prisma/client';
+import { Injectable } from "@nestjs/common";
+import { Control, Display } from "@prisma/client";
 import CreateControlDto from "./dto/createControl.dto";
 import UpdateControlDto from "./dto/updateControl.dto";
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export default class ControlsService {
-  getAllControls(userId: number): Promise<Control[]> {
-    throw new NotImplementedException();
+  constructor(
+    private readonly prisma: PrismaService
+  ) {}
+
+  async getAllControls(userId: number): Promise<Control[]> {
+    return await this.prisma.control.findMany();
   }
 
-  getControlById(userId: number, controlId: number): Promise<Control> {
-    throw new NotImplementedException();
+  async getControlsInProject(userId: number, projectId: number): Promise<Control[]> {
+    return await this.prisma.control.findMany({ where: { id: Number(projectId) } });
   }
 
-  addControl(userId: number, controlData: CreateControlDto): Promise<Control> {
-    throw new NotImplementedException();
+  async getControlById(userId: number, controlId: number): Promise<Control> {
+    return await this.prisma.control.findFirst({ where: { id: Number(controlId) }});
   }
 
-  updateControl(userId: number, controlId: number, controlData: UpdateControlDto): Promise<Control> {
-    throw new NotImplementedException();
+  async addControl(userId: number, controlData: CreateControlDto): Promise<Control> {
+    return await this.prisma.control.create({ data: controlData });
   }
 
-  removeControl(userId: number, controlId: number): Promise<Control> {
-    throw new NotImplementedException();
+  async updateControl(userId: number, controlId: number, controlData: UpdateControlDto): Promise<Control> {
+    return await this.prisma.control.update({ where: { id: Number(controlId) }, data: controlData });
+  }
+
+  async removeControl(userId: number, controlId: number): Promise<Control> {
+    return await this.prisma.control.delete({ where: { id: Number(controlId) } });
   }
 }

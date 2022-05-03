@@ -1,32 +1,57 @@
-import { Injectable, NotImplementedException } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { Project } from "@prisma/client";
 import { CreateProjectDto } from "./dto/createProject.dto";
 import { UpdateProjectDto } from "./dto/updatePost.dto";
+import { PrismaService } from "../prisma/prisma.service";
+import {v4 as uuidv4} from 'uuid';
 
 @Injectable()
 export default class ProjectsService {
-  getAllProjects(userId: number): Promise<Project[]> {
-    throw new NotImplementedException();
+  constructor(
+    private readonly prisma: PrismaService
+  ) {}
+
+  async getAllProjects(userId: number): Promise<Project[]> {
+    return await this.prisma.project.findMany( {
+      orderBy: {
+        id: 'asc'
+      }
+    });
   }
 
-  getProjectById(userId: number, projectId: number): Promise<Project> {
-    throw new NotImplementedException();
+  async getProjectsPaged(userId: number, page: number, projectsOnPage: number = 4): Promise<Project[]> {
+    return await this.prisma.project.findMany({
+      skip: projectsOnPage * (page - 1),
+      take: projectsOnPage,
+      orderBy: {
+        id: 'asc'
+      }
+    })
   }
 
-  addProject(userId: number, projectData: CreateProjectDto): Promise<Project> {
-    throw new NotImplementedException();
+  async getNumberOfPages(projectsOnPage: number = 4): Promise<number> {
+    return Math.ceil(await this.prisma.project.count() / projectsOnPage);
   }
 
-  removeProject(userId: number, projectId: number): Promise<Project> {
-    throw new NotImplementedException();
+  async getProjectById(userId: number, projectId: number): Promise<Project> {
+    return await this.prisma.project.findFirst({ where: { id: Number(projectId) }});
   }
 
-  updateProject(userId: number, projectId: number,
+  async addProject(userId: number, projectData: CreateProjectDto): Promise<Project> {
+    return await this.prisma.project.create({ data: projectData });
+  }
+
+  async removeProject(userId: number, projectId: number): Promise<Project> {
+    return await this.prisma.project.delete({ where: { id: Number(projectId) } });
+  }
+
+  async updateProject(userId: number, projectId: number,
                 projectData: UpdateProjectDto): Promise<Project> {
-    throw new NotImplementedException();
+    return await this.prisma.project.update({ where: { id: Number(projectId) }, data: projectData });
   }
 
-  shareProject(userId: number, projectId: number): Promise<Project> {
-    throw new NotImplementedException();
+  async shareProject(userId: number, projectId: number): Promise<Project> {
+    let sharingCode = uuidv4();
+    return await this.prisma.project.update({ where: { id: Number(projectId) }, data: { sharingCode: sharingCode } });
   }
 }
