@@ -16,14 +16,14 @@ import { AuthModule } from './auth/auth.module';
               }]
             ),
             AuthModule.forRoot({
-              connectionURI: "https://a89ebc61c61911ec8aa6f9f72d564744-eu-west-1.aws.supertokens.io:3567",
-              apiKey: "kNZcBk1kH7J1latt3psabC2yTY=UfH",
+              connectionURI: process.env.CONNECTION_URI,
+              apiKey: process.env.API_KEY,
               appInfo: {
-                appName: "IoTServer",
-                apiDomain: "http://localhost:3000",
-                websiteDomain: "http://localhost:3000",
-                apiBasePath: "/api/auth",
-                websiteBasePath: "/login"
+                appName: process.env.APP_NAME,
+                apiDomain: process.env.API_DOMAIN,
+                websiteDomain: process.env.WEBSITE_DOMAIN,
+                apiBasePath: process.env.API_BASE_PATH,
+                websiteBasePath: process.env.WEBSITE_BASE_PATH
               },
             }),
   ],

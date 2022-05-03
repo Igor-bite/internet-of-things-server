@@ -22,7 +22,7 @@ async function bootstrap() {
   }));
 
   app.enableCors({
-    origin: ['http://localhost:3000'],
+    origin: [process.env.API_DOMAIN],
     allowedHeaders: ['content-type', ...supertokens.getAllCORSHeaders()],
     credentials: true,
   });
@@ -56,7 +56,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('IoT Server API')
     .setDescription('API for controlling your microcontrollers through internet')
-    .setVersion('0.0.1')
+    .setVersion('0.0.2')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);

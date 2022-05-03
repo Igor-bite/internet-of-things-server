@@ -36,10 +36,10 @@ export default class ApiAuthController {
     const result = await lastValueFrom(
       this.httpService
         .post(
-          'http://localhost:3000/api/auth/signinup',
+          process.env.API_DOMAIN + process.env.API_BASE_PATH + "/signinup",
           JSON.stringify({
             code,
-            redirectURI: 'http://localhost:3000/callback/github',
+            redirectURI: process.env.API_DOMAIN + process.env.GITHUB_CALLBACK_PATH,
             thirdPartyId: 'github',
           }),
           {
