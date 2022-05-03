@@ -1,9 +1,10 @@
 import { Get, Post, Delete, Param, Controller, Body, Put, ParseIntPipe, Query } from "@nestjs/common";
 import TodosService from './todos.service';
-import { User } from '../decorators/user.decorator'
+import { SupertokenUserId, UserFromSupertokenId } from'../decorators/user.decorator'
 import { ApiBearerAuth, ApiOkResponse, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { UpdateTodoDto } from "./dto/updateTodo.dto";
 import { CreateTodoDto } from "./dto/createTodo.dto";
+import { User } from "@prisma/client";
 
 @ApiBearerAuth()
 @ApiTags('todos')
@@ -23,14 +24,14 @@ export default class ApiTodosController {
     required: false
   })
   async getTodosPaged(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Query('page') page: number
   ) {
     if (!page) {
-      return { todos: await this.todosService.getAllTodos(userId) };
+      return { todos: await this.todosService.getAllTodos(user.id) };
     }
     page = Number(page)
-    return { todos: await this.todosService.getTodosPaged(userId, page) };
+    return { todos: await this.todosService.getTodosPaged(user.id, page) };
   }
 
   @Get(':id')
@@ -39,10 +40,10 @@ export default class ApiTodosController {
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No todo with this id' })
   async getTodoById(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Param('id') todoId: number
   ) {
-    return await this.todosService.getTodoById(userId, todoId);
+    return await this.todosService.getTodoById(user.id, todoId);
   }
 
   @Post()
@@ -50,10 +51,10 @@ export default class ApiTodosController {
   @ApiResponse({ status: 400, description: 'The data is not valid for creating' })
   @ApiResponse({ status: 401, description: 'No authorization' })
   async addTodo(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Body() todoData: CreateTodoDto
   ) {
-    return await this.todosService.addTodo(userId, todoData);
+    return await this.todosService.addTodo(user.id, todoData);
   }
 
   @Put(':id')
@@ -63,11 +64,11 @@ export default class ApiTodosController {
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No todo with this id' })
   async updateTodo(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Param('id') todoId: number,
     @Body() todoData: UpdateTodoDto
   ) {
-    return await this.todosService.updateTodo(userId, todoId, todoData);
+    return await this.todosService.updateTodo(user.id, todoId, todoData);
   }
 
   @Delete(':id')
@@ -75,9 +76,9 @@ export default class ApiTodosController {
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No todo with this id' })
   async removeTodo(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Param('id') todoId: number
   ) {
-    return await this.todosService.removeTodo(userId, todoId);
+    return await this.todosService.removeTodo(user.id, todoId);
   }
 }

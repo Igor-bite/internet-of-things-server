@@ -1,14 +1,14 @@
-import { Controller, Render, Get, Param, ParseIntPipe, Query, UseGuards } from "@nestjs/common";
+import { Controller, Render, Get, Query, UseGuards } from "@nestjs/common";
 import ProjectsService from './projects.service';
-import { User } from "../decorators/user.decorator";
+import { SupertokenUserId, UserFromSupertokenId } from "../decorators/user.decorator";
 import { ApiQuery } from "@nestjs/swagger";
 import NewsService from "../news/news.service";
 import TodosService from "../todos/todos.service";
 import { AuthGuard } from "../auth/auth.guard";
-import { Session } from "../auth/session.decorator";
-import { SessionContainer } from "supertokens-node/lib/build/recipe/session/faunadb";
+import { User } from "@prisma/client";
 
 @Controller('projects')
+@UseGuards(AuthGuard)
 export default class ProjectsController {
   constructor(
     private readonly projectsService: ProjectsService,
@@ -24,13 +24,10 @@ export default class ProjectsController {
     description: "Page number of showing projects. If not presented, returns first page",
     required: false
   })
-  @UseGuards(AuthGuard)
   async getAllProjectsPaged(
-    @Session() session: SessionContainer,
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Query('page') page?: number
   ) {
-    console.log(userId)
     page = Number(page)
     if (!page) {
       page = 1
@@ -40,11 +37,11 @@ export default class ProjectsController {
       page = pages
     }
     return {
-      projects: await this.projectsService.getProjectsPaged(userId, page),
+      projects: await this.projectsService.getProjectsPaged(user.id, page),
       currentPage: page,
       pages: pages,
-      news: await this.newsService.getRandomNewsPost(userId),
-      todos: await this.todosService.getAllTodos(userId)
+      news: await this.newsService.getRandomNewsPost(user.id),
+      todos: await this.todosService.getAllTodos(user.id)
     };
   }
 }

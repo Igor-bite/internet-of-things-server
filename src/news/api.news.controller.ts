@@ -1,9 +1,10 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query } from "@nestjs/common";
 import NewsService from './news.service';
-import { User } from "../decorators/user.decorator";
+import { SupertokenUserId, UserFromSupertokenId } from "../decorators/user.decorator";
 import { ApiBearerAuth, ApiOkResponse, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { CreateNewsDto } from "./dto/createNews.dto";
 import { UpdateNewsDto } from "./dto/updateNews.dto";
+import { User } from "@prisma/client";
 
 @ApiBearerAuth()
 @ApiTags('news')
@@ -25,14 +26,14 @@ export default class ApiNewsController {
     required: false
   })
   async getNewsPaged(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Query('page') page?: number
   ) {
     if (!page) {
-      return { news: await this.newsService.getAllNews(userId) };
+      return { news: await this.newsService.getAllNews(user.id) };
     }
     page = Number(page)
-    return { news: await this.newsService.getNewsPaged(userId, page) };
+    return { news: await this.newsService.getNewsPaged(user.id, page) };
   }
 
   @Get(':id')
@@ -41,10 +42,10 @@ export default class ApiNewsController {
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No news with this id' })
   async getNewsById(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Param('id') newsId: number
   ) {
-    return await this.newsService.getNewsById(userId, newsId);
+    return await this.newsService.getNewsById(user.id, newsId);
   }
 
   @Post()
@@ -52,10 +53,10 @@ export default class ApiNewsController {
   @ApiResponse({ status: 400, description: 'The data is not valid for creating' })
   @ApiResponse({ status: 401, description: 'No authorization' })
   async addNews(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Body() newsData: CreateNewsDto
   ) {
-    return await this.newsService.addNews(userId, newsData);
+    return await this.newsService.addNews(user.id, newsData);
   }
 
   @Put(':id')
@@ -65,11 +66,11 @@ export default class ApiNewsController {
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No news with this id' })
   async updateNews(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Param('id') newsId: number,
     @Body() newsData: UpdateNewsDto
   ) {
-    return await this.newsService.updateNews(userId, newsId, newsData);
+    return await this.newsService.updateNews(user.id, newsId, newsData);
   }
 
   @Delete(':id')
@@ -77,9 +78,9 @@ export default class ApiNewsController {
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No news with this id' })
   async removeNews(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Param('id') newsId: number
   ) {
-    return await this.newsService.removeNews(userId, newsId);
+    return await this.newsService.removeNews(user.id, newsId);
   }
 }

@@ -73,7 +73,7 @@ export default class ApiAuthController {
     if (!finalUser) {
       finalUser = await this.usersService.addUser(id, newUser);
     }
-    res.header( 'set-cookie', cookie + "; UserID=" + finalUser.id);
+    res.header( 'set-cookie', cookie);
     return { isLogged: true, name: finalUser.name };
   }
 }

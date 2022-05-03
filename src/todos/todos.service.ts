@@ -1,4 +1,4 @@
-import { Injectable, NotImplementedException } from "@nestjs/common";
+import { ForbiddenException, Injectable, NotImplementedException } from "@nestjs/common";
 import { Project, ToDo as ToDoModel, TodoState } from "@prisma/client";
 import { CreateTodoDto } from "./dto/createTodo.dto";
 import { UpdateTodoDto } from "./dto/updateTodo.dto";
@@ -11,7 +11,6 @@ export default class TodosService {
   ) {}
 
   async getAllTodos(userId: number): Promise<ToDoModel[]> {
-    userId = 4
     return await this.prisma.toDo.findMany({ where: { ownerId: Number(userId) } });
   }
 
@@ -33,6 +32,11 @@ export default class TodosService {
   }
 
   async addTodo(userId: number, todoData: CreateTodoDto): Promise<ToDoModel> {
+    if (todoData.ownerId == undefined) {
+      todoData.ownerId = userId;
+    } else if (todoData.ownerId !== userId) {
+      throw new ForbiddenException();
+    }
     return await this.prisma.toDo.create({ data: todoData });
   }
 

@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { ForbiddenException, Injectable } from "@nestjs/common";
 import { Project } from "@prisma/client";
 import { CreateProjectDto } from "./dto/createProject.dto";
 import { UpdateProjectDto } from "./dto/updatePost.dto";
@@ -29,6 +29,9 @@ export default class ProjectsService {
       take: projectsOnPage,
       orderBy: {
         id: 'asc'
+      },
+      where: {
+        ownerId: userId
       }
     })
   }
@@ -42,6 +45,11 @@ export default class ProjectsService {
   }
 
   async addProject(userId: number, projectData: CreateProjectDto): Promise<Project> {
+    if (projectData.ownerId == undefined) {
+      projectData.ownerId = userId;
+    } else if (projectData.ownerId !== userId) {
+      throw new ForbiddenException();
+    }
     return await this.prisma.project.create({ data: projectData });
   }
 

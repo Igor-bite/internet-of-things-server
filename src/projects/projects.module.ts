@@ -6,10 +6,11 @@ import { ControlsModule } from "../controls/controls.module";
 import { DisplaysModule } from "../displays/displays.module";
 import { NewsModule } from "../news/news.module";
 import { TodosModule } from "../todos/todos.module";
+import { UsersModule } from "../users/users.module";
 
 @Module({
   controllers: [ProjectsController],
-  imports: [PrismaModule, ControlsModule, DisplaysModule, NewsModule, TodosModule],
+  imports: [PrismaModule, ControlsModule, DisplaysModule, NewsModule, TodosModule, UsersModule],
   providers: [ProjectsService],
   exports: [ProjectsService]
 })

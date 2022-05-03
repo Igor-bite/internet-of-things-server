@@ -2,15 +2,17 @@ import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, U
 import ProjectsService from './projects.service';
 import { CreateProjectDto } from "./dto/createProject.dto";
 import { UpdateProjectDto } from "./dto/updatePost.dto";
-import { User } from "../decorators/user.decorator";
+import { SupertokenUserId, UserFromSupertokenId } from"../decorators/user.decorator";
 import { ApiBearerAuth, ApiOkResponse, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
 import ControlsService from "../controls/controls.service";
 import DisplaysService from "../displays/displays.service";
 import { AuthGuard } from "../auth/auth.guard";
+import { User } from "@prisma/client";
 
 @ApiBearerAuth()
 @ApiTags('projects')
 @Controller('projects')
+@UseGuards(AuthGuard)
 export default class ApiProjectsController {
   constructor(
     private readonly projectsService: ProjectsService,
@@ -30,14 +32,14 @@ export default class ApiProjectsController {
     required: false
   })
   async getProjectsPaged(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Query('page') page?: number
   ) {
     if (!page) {
-      return { project: await this.projectsService.getAllProjects(userId) }
+      return { project: await this.projectsService.getAllProjects(user.id) }
     }
     page = Number(page)
-    return { projects: await this.projectsService.getProjectsPaged(userId, page) };
+    return { projects: await this.projectsService.getProjectsPaged(user.id, page) };
   }
 
   @Get(':id')
@@ -46,10 +48,10 @@ export default class ApiProjectsController {
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No project with this id' })
   async getProjectById(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Param('id') projectId: number
   ) {
-    return await this.projectsService.getProjectById(userId, projectId);
+    return await this.projectsService.getProjectById(user.id, projectId);
   }
 
   @Get(':id/controls')
@@ -58,10 +60,10 @@ export default class ApiProjectsController {
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No project with this id' })
   async getControlsInProject(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Param('id') projectId: number
   ) {
-    return await this.controlsService.getControlsInProject(userId, projectId);
+    return await this.controlsService.getControlsInProject(user.id, projectId);
   }
 
   @Get(':id/displays')
@@ -70,10 +72,10 @@ export default class ApiProjectsController {
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No project with this id' })
   async getDisplaysInProject(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Param('id') projectId: number
   ) {
-    return await this.displaysService.getDisplaysInProject(userId, projectId);
+    return await this.displaysService.getDisplaysInProject(user.id, projectId);
   }
 
   @Post()
@@ -81,10 +83,10 @@ export default class ApiProjectsController {
   @ApiResponse({ status: 400, description: 'The data is not valid for creating' })
   @ApiResponse({ status: 401, description: 'No authorization' })
   async addProject(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Body() projectData: CreateProjectDto
   ) {
-    return await this.projectsService.addProject(userId, projectData);
+    return await this.projectsService.addProject(user.id, projectData);
   }
 
   @Delete(':id')
@@ -92,10 +94,10 @@ export default class ApiProjectsController {
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No project with this id' })
   async removeProject(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Param('id') projectId: number
   ) {
-    return await this.projectsService.removeProject(userId, projectId);
+    return await this.projectsService.removeProject(user.id, projectId);
   }
 
   @Put(':id')
@@ -105,11 +107,11 @@ export default class ApiProjectsController {
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No project with this id' })
   async updateProject(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Param('id') projectId: number,
     @Body() projectData: UpdateProjectDto
   ) {
-    return await this.projectsService.updateProject(userId, projectId, projectData);
+    return await this.projectsService.updateProject(user.id, projectId, projectData);
   }
 
   @Get(':id/share')
@@ -117,9 +119,9 @@ export default class ApiProjectsController {
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No project with this id' })
   async shareProject(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Param('id') projectId: number
   ) {
-    return await this.projectsService.shareProject(userId, projectId);
+    return await this.projectsService.shareProject(user.id, projectId);
   }
 }

@@ -12,9 +12,9 @@ export class CreateProjectDto {
   @ApiProperty({
     description: 'Owner of the project'
   })
-  @IsNotEmpty()
+  @IsOptional()
   @IsInt()
-  readonly ownerId: number;
+  ownerId: number;
 
   @ApiProperty({
     description: 'Url for background image of the project'

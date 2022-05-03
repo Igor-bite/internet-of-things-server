@@ -1,9 +1,10 @@
 import { Get, Post, Delete, Param, Body, Controller, Put } from "@nestjs/common";
-import { User } from '../decorators/user.decorator';
+import { SupertokenUserId, UserFromSupertokenId } from'../decorators/user.decorator';
 import DisplaysService from "./displays.service";
 import CreateDisplayDto from "./dto/createDisplay.dto";
 import UpdateDisplayDto from "./dto/updateDisplay.dto";
 import { ApiBearerAuth, ApiOkResponse, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { User } from "@prisma/client";
 
 @ApiBearerAuth()
 @ApiTags('displays')
@@ -17,9 +18,9 @@ export default class ApiDisplaysController {
   @ApiResponse({ status: 304, description: 'No changes' })
   @ApiResponse({ status: 401, description: 'No authorization' })
   async getAllDisplays(
-    @User('id') userId: number
+    @SupertokenUserId(UserFromSupertokenId) user: User
   ) {
-    return await this.displaysService.getAllDisplays(userId);
+    return await this.displaysService.getAllDisplays(user.id);
   }
 
   @Get(':id')
@@ -28,10 +29,10 @@ export default class ApiDisplaysController {
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No display with this id' })
   async getDisplayById(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Param('id') displayId: number
   ) {
-    return await this.displaysService.getDisplayById(userId, displayId);
+    return await this.displaysService.getDisplayById(user.id, displayId);
   }
 
   @Post()
@@ -39,10 +40,10 @@ export default class ApiDisplaysController {
   @ApiResponse({ status: 400, description: 'The data is not valid for creating' })
   @ApiResponse({ status: 401, description: 'No authorization' })
   async addDisplay(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Body() displayData: CreateDisplayDto
   ) {
-    return await this.displaysService.addDisplay(userId, displayData);
+    return await this.displaysService.addDisplay(user.id, displayData);
   }
 
   @Put(':id')
@@ -52,11 +53,11 @@ export default class ApiDisplaysController {
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No display with this id' })
   async updateTodo(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Param('id') displayId: number,
     @Body() displayData: UpdateDisplayDto
   ) {
-    return await this.displaysService.updateDisplay(userId, displayId, displayData);
+    return await this.displaysService.updateDisplay(user.id, displayId, displayData);
   }
 
   @Delete(':id')
@@ -64,9 +65,9 @@ export default class ApiDisplaysController {
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No display with this id' })
   async removeTodo(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Param('id') displayId: number
   ) {
-    return await this.displaysService.removeDisplay(userId, displayId);
+    return await this.displaysService.removeDisplay(user.id, displayId);
   }
 }

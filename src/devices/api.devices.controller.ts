@@ -1,9 +1,10 @@
 import { Get, Post, Delete, Param, Controller, Body, Put } from "@nestjs/common";
 import DevicesService from './devices.service';
-import { User } from '../decorators/user.decorator';
+import { SupertokenUserId, UserFromSupertokenId } from "../decorators/user.decorator";
 import { ApiBearerAuth, ApiOkResponse, ApiResponse, ApiTags } from "@nestjs/swagger";
 import CreateDeviceDto from "./dto/createDevice.dto";
 import UpdateDeviceDto from "./dto/updateDevice.dto";
+import { User } from "@prisma/client";
 
 @ApiBearerAuth()
 @ApiTags('devices')
@@ -17,9 +18,9 @@ export default class ApiDevicesController {
   @ApiResponse({ status: 304, description: 'No changes' })
   @ApiResponse({ status: 401, description: 'No authorization' })
   async getAllDevices(
-    @User('id') userId: number
+    @SupertokenUserId(UserFromSupertokenId) user: User
   ) {
-    return await this.devicesService.getAllDevices(userId);
+    return await this.devicesService.getAllDevices(user.id);
   }
 
   @Get(':id')
@@ -28,10 +29,10 @@ export default class ApiDevicesController {
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No device with this id' })
   async getDeviceById(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Param('id') deviceId: number
   ) {
-    return await this.devicesService.getDeviceById(userId, deviceId);
+    return await this.devicesService.getDeviceById(user.id, deviceId);
   }
 
   @Post()
@@ -39,10 +40,10 @@ export default class ApiDevicesController {
   @ApiResponse({ status: 400, description: 'The data is not valid for creating' })
   @ApiResponse({ status: 401, description: 'No authorization' })
   async addDevice(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Body() deviceData: CreateDeviceDto
   ) {
-    return await this.devicesService.addDevice(userId, deviceData);
+    return await this.devicesService.addDevice(user.id, deviceData);
   }
 
   @Put(':id')
@@ -52,11 +53,11 @@ export default class ApiDevicesController {
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No device with this id' })
   async updateDevice(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Param('id') deviceId: number,
     @Body() deviceData: UpdateDeviceDto
   ) {
-    return await this.devicesService.updateDevice(userId, deviceId, deviceData);
+    return await this.devicesService.updateDevice(user.id, deviceId, deviceData);
   }
 
   @Delete(':id')
@@ -64,9 +65,9 @@ export default class ApiDevicesController {
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No device with this id' })
   async removeTodo(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Param('id') deviceId: number
   ) {
-    return await this.devicesService.removeDevice(userId, deviceId);
+    return await this.devicesService.removeDevice(user.id, deviceId);
   }
 }

@@ -10,7 +10,7 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-var projects_counter = 0
+let projects_counter = 0
 
 function addNewProject() {
     const rand_num = getRandomInt(1, 1025)
@@ -39,7 +39,6 @@ function addNewProject() {
 
                 let data = `{
                   "title": "${json.author}",
-                  "ownerId": 7,
                   "backgroundImageUrl": "https://picsum.photos/id/${json.id}/800/500"
                 }`;
 
@@ -53,4 +52,3 @@ function addNewProject() {
                 "                            </div>"
         })
 }
-

@@ -93,8 +93,7 @@ const todo = {
         xhr.setRequestHeader("Content-Type", "application/json");
 
         let data = `{
-                        "title": "${title}",
-                        "ownerId": 4
+                        "title": "${title}"
                      }`;
 
         xhr.responseType = 'json';
