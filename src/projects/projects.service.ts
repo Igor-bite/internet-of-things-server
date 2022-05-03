@@ -36,8 +36,8 @@ export default class ProjectsService {
     })
   }
 
-  async getNumberOfPages(projectsOnPage: number = 4): Promise<number> {
-    return Math.ceil(await this.prisma.project.count() / projectsOnPage);
+  async getNumberOfPages(userId: number, projectsOnPage: number = 4): Promise<number> {
+    return Math.ceil(await this.prisma.project.count({ where: { ownerId: Number(userId) } }) / projectsOnPage);
   }
 
   async getProjectById(userId: number, projectId: number): Promise<Project> {

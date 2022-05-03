@@ -32,7 +32,7 @@ export default class ProjectsController {
     if (!page) {
       page = 1
     }
-    const pages = await this.projectsService.getNumberOfPages();
+    const pages = await this.projectsService.getNumberOfPages(user.id);
     if (page > pages) {
       page = pages
     }
