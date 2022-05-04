@@ -13,7 +13,7 @@ import { Socket, Server } from 'socket.io';
     origin: '*',
   },
 })
-export class AppGateway
+export class WebsocketGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() server: Server;
 
@@ -32,5 +32,9 @@ export class AppGateway
 
   handleConnection(client: Socket, ...args: any[]) {
     console.log(`Client connected: ${client.id}`);
+  }
+
+  sendMessage(message: string) {
+    this.server.emit('msgToClient', message);
   }
 }
