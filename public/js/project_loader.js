@@ -43,6 +43,8 @@ function addNewProject() {
                 }`;
 
                 xhr.send(data);
+
+                socket.emit('msgToServer', 'Project added!')
             }, getRandomInt(1, 3) * 1000)
         })
         .catch(() => {

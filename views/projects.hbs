@@ -7,8 +7,19 @@
         {{> pageload_script }}
         {{> project_loader_script }}
         {{> todo_handler_script }}
+      <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     </head>
     <body>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.2/js/toastr.min.js"></script>
+        <script src="https://cdn.socket.io/4.5.0/socket.io.min.js" integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k" crossorigin="anonymous"></script>
+        <script>
+          const port = 8585;
+          const socket = io(document.location.protocol + "//" + document.location.hostname + ":" + port);
+          socket.on('msgToClient', (message) => {
+            toastr.success(message);
+          })
+        </script>
         <div class="container">
           {{> header }}
           <div class="main-container">

@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ApiModule } from "./api/api.module";
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from "./users/users.module";
+import { AppGateway } from "./app.gateway";
 
 @Module({
   imports: [ConfigModule.forRoot(),
@@ -30,6 +31,6 @@ import { UsersModule } from "./users/users.module";
             }),
   ],
   controllers: [AppController],
-  providers: [AppService]
+  providers: [AppService, AppGateway]
 })
 export class AppModule {}
