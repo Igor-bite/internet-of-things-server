@@ -64,7 +64,6 @@ export class WebsocketGateway
 
   async decodeUserIdFrom(token: string) {
     token = token.replace("%3D", "").replace("%3D", "").replace("%3D", "").replace("%3D", "")
-    console.log(`Decoding token:\n${token}`);
     let payload = token.split('.')[1]
     let decodedPayload = JSON.parse(Buffer.from(payload, 'base64').toString('ascii'));
 

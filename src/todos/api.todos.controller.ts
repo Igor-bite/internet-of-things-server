@@ -1,12 +1,13 @@
-import { Get, Post, Delete, Param, Controller, Body, Put, ParseIntPipe, Query } from "@nestjs/common";
+import { Get, Post, Delete, Param, Controller, Body, Put, ParseIntPipe, Query, UseGuards } from "@nestjs/common";
 import TodosService from './todos.service';
 import { SupertokenUserId, UserFromSupertokenId } from'../decorators/user.decorator'
 import { ApiBearerAuth, ApiOkResponse, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { UpdateTodoDto } from "./dto/updateTodo.dto";
 import { CreateTodoDto } from "./dto/createTodo.dto";
 import { User } from "@prisma/client";
+import { AuthGuard } from "../auth/auth.guard";
 
-@ApiBearerAuth()
+@UseGuards(AuthGuard)
 @ApiTags('todos')
 @Controller('todos')
 export default class ApiTodosController {

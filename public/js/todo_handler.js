@@ -87,7 +87,7 @@ const todo = {
 
         let xhr = new XMLHttpRequest();
         const site = new URL(document.location.origin)
-        xhr.open("POST", site + "/api/todos", true);
+        xhr.open("POST", site + "api/todos", true);
 
         xhr.setRequestHeader("Accept", "application/json");
         xhr.setRequestHeader("Content-Type", "application/json");
