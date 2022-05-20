@@ -86,7 +86,7 @@ const todo = {
         const title = elemText.value;
 
         let xhr = new XMLHttpRequest();
-        const site = new URL(document.location).origin
+        const site = new URL(document.location.origin)
         xhr.open("POST", site + "/api/todos", true);
 
         xhr.setRequestHeader("Accept", "application/json");

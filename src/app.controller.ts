@@ -1,9 +1,10 @@
 import { Get, Controller, Render, Query } from "@nestjs/common";
-import { WebsocketGateway } from "./gateway/app.gateway";
+import { WebsocketGateway } from "./websocket/websocket.gateway";
+import DevicesService from "./devices/devices.service";
 
 @Controller()
 export class AppController {
-  constructor(private readonly socket: WebsocketGateway) {}
+  constructor(private readonly socket: WebsocketGateway, private readonly devicesService: DevicesService) {}
 
   @Get()
   @Render('index')
@@ -12,10 +13,12 @@ export class AppController {
   }
 
   @Get('notify')
-  notify(
-    @Query('message') message: string
+  async notify(
+    @Query('message') message: string,
+    @Query('deviceId') deviceToken?: string
   ) {
-    this.socket.sendMessage(message);
+    let device = await this.devicesService.getDeviceByToken(deviceToken);
+    this.socket.sendMessageToUser(message, device.ownerId);
     return { status: "OK" }
   }
 }

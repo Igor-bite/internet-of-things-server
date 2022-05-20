@@ -18,6 +18,10 @@ export default class DevicesService {
     return await this.prisma.device.findFirst({ where: { id: Number(deviceId) } });
   }
 
+  async getDeviceByToken(deviceToken: string): Promise<Device> {
+    return await this.prisma.device.findFirst({ where: { token: deviceToken } });
+  }
+
   async addDevice(userId: number, deviceData: CreateDeviceDto): Promise<Device> {
     return await this.prisma.device.create({ data: deviceData });
   }
