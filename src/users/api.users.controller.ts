@@ -1,10 +1,10 @@
 import { Get, Post, Delete, Param, Controller, Body, Put } from "@nestjs/common";
 import UsersService from './users.service';
-import { User } from '../decorators/user.decorator';
+import { SupertokenUserId, UserFromSupertokenId } from "../decorators/user.decorator";
 import { ApiBearerAuth, ApiOkResponse, ApiResponse, ApiTags } from "@nestjs/swagger";
 import CreateUserDto from "./dto/createUser.dto";
 import UpdateUserDto from "./dto/updateUser.dto";
-import SignInUserDto from "./dto/signInUser.dto";
+import { User } from "@prisma/client";
 
 @ApiBearerAuth()
 @ApiTags('users')
@@ -18,9 +18,9 @@ export default class ApiUsersController {
   @ApiResponse({ status: 304, description: 'No changes' })
   @ApiResponse({ status: 401, description: 'No authorization' })
   async getAllUsers(
-    @User('id') userId: number
+    @SupertokenUserId(UserFromSupertokenId) user: User
   ) {
-    return await this.usersService.getAllUsers(userId);
+    return await this.usersService.getAllUsers(user.id);
   }
 
   @Get(':id')
@@ -29,10 +29,10 @@ export default class ApiUsersController {
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No user with this id' })
   async getUserById(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Param('id') neededUserId: number
   ) {
-    return await this.usersService.getUserById(userId, neededUserId);
+    return await this.usersService.getUserById(user.id, neededUserId);
   }
 
   @Post()
@@ -40,19 +40,10 @@ export default class ApiUsersController {
   @ApiResponse({ status: 400, description: 'The data is not valid for creating' })
   @ApiResponse({ status: 401, description: 'No authorization' })
   async addUser(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Body() newUserData: CreateUserDto
   ) {
-    return await this.usersService.addUser(userId, newUserData);
-  }
-
-  @Post('login')
-  @ApiResponse({ status: 200, description: 'Logged in' })
-  async signInUser(
-    @User('id') userId: number,
-    @Body() userData: SignInUserDto
-  ) {
-    return await this.usersService.authenticateUserByEmail(userData);
+    return await this.usersService.addUser(user.id, newUserData);
   }
 
   @Put(':id')
@@ -62,11 +53,11 @@ export default class ApiUsersController {
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No user with this id' })
   async updateUser(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Param('id') updatedUserId: number,
     @Body() updatedUserData: UpdateUserDto
   ) {
-    return await this.usersService.updateUser(userId, updatedUserId, updatedUserData);
+    return await this.usersService.updateUser(user.id, updatedUserId, updatedUserData);
   }
 
   @Delete(':id')
@@ -74,9 +65,9 @@ export default class ApiUsersController {
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No user with this id' })
   async removeUser(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Param('id') removedUserId: number
   ) {
-    return await this.usersService.removeUser(userId, removedUserId);
+    return await this.usersService.removeUser(user.id, removedUserId);
   }
 }

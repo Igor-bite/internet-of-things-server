@@ -10,9 +10,9 @@ datasource db {
 
 model User {
   id               Int              @id @default(autoincrement())
+  supertokenId     String           @unique
   createdAt        DateTime         @default(now())
   email            String           @unique
-  passwordHash     String
   name             String?
   surname          String?
   subscriptionPlan SubscriptionPlan @default(NONE)

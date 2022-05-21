@@ -1,11 +1,14 @@
-import { Controller, Render, Get, Param, ParseIntPipe, Query } from "@nestjs/common";
+import { Controller, Render, Get, Query, UseGuards } from "@nestjs/common";
 import ProjectsService from './projects.service';
-import { User } from "../decorators/user.decorator";
+import { SupertokenUserId, UserFromSupertokenId } from "../decorators/user.decorator";
 import { ApiQuery } from "@nestjs/swagger";
 import NewsService from "../news/news.service";
 import TodosService from "../todos/todos.service";
+import { AuthGuard } from "../auth/auth.guard";
+import { User } from "@prisma/client";
 
 @Controller('projects')
+@UseGuards(AuthGuard)
 export default class ProjectsController {
   constructor(
     private readonly projectsService: ProjectsService,
@@ -22,23 +25,23 @@ export default class ProjectsController {
     required: false
   })
   async getAllProjectsPaged(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Query('page') page?: number
   ) {
     page = Number(page)
     if (!page) {
       page = 1
     }
-    const pages = await this.projectsService.getNumberOfPages();
+    const pages = await this.projectsService.getNumberOfPages(user.id);
     if (page > pages) {
       page = pages
     }
     return {
-      projects: await this.projectsService.getProjectsPaged(userId, page),
+      projects: await this.projectsService.getProjectsPaged(user.id, page),
       currentPage: page,
       pages: pages,
-      news: await this.newsService.getRandomNewsPost(userId),
-      todos: await this.todosService.getAllTodos(userId)
+      news: await this.newsService.getRandomNewsPost(user.id),
+      todos: await this.todosService.getAllTodos(user.id)
     };
   }
 }

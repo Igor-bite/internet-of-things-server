@@ -4,6 +4,7 @@
   <title>IoT Controller</title>
   {{> meta }}
   {{> css }}
+  {{> auth_script }}
 </head>
 <body>
 <div class="container">
@@ -18,7 +19,7 @@
           </p>
           {{#if isLogged}}
             <p class="description">
-              Hi, {{name}}! Your are already logged in. Ready to start?
+              Hi, {{user.name}}! Your are already logged in. Ready to start?
             </p>
           {{else}}
             <p class="description">

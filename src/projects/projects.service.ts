@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { ForbiddenException, Injectable } from "@nestjs/common";
 import { Project } from "@prisma/client";
 import { CreateProjectDto } from "./dto/createProject.dto";
 import { UpdateProjectDto } from "./dto/updatePost.dto";
@@ -20,17 +20,24 @@ export default class ProjectsService {
   }
 
   async getProjectsPaged(userId: number, page: number, projectsOnPage: number = 4): Promise<Project[]> {
+    const projectsCount = await this.prisma.project.count();
+    if (projectsCount <= projectsOnPage) {
+      return await this.prisma.project.findMany();
+    }
     return await this.prisma.project.findMany({
       skip: projectsOnPage * (page - 1),
       take: projectsOnPage,
       orderBy: {
         id: 'asc'
+      },
+      where: {
+        ownerId: userId
       }
     })
   }
 
-  async getNumberOfPages(projectsOnPage: number = 4): Promise<number> {
-    return Math.ceil(await this.prisma.project.count() / projectsOnPage);
+  async getNumberOfPages(userId: number, projectsOnPage: number = 4): Promise<number> {
+    return Math.ceil(await this.prisma.project.count({ where: { ownerId: Number(userId) } }) / projectsOnPage);
   }
 
   async getProjectById(userId: number, projectId: number): Promise<Project> {
@@ -38,6 +45,11 @@ export default class ProjectsService {
   }
 
   async addProject(userId: number, projectData: CreateProjectDto): Promise<Project> {
+    if (projectData.ownerId == undefined) {
+      projectData.ownerId = userId;
+    } else if (projectData.ownerId !== userId) {
+      throw new ForbiddenException();
+    }
     return await this.prisma.project.create({ data: projectData });
   }
 

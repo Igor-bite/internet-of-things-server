@@ -1,6 +1,6 @@
 <script>
   function goToPage(page) {
     const site_location = new URL(document.location).pathname.split("/page")[0]
-    window.location.replace(site_location + "\/page=" + page);
+    window.location.replace(site_location + "?page=" + page);
   }
 </script>

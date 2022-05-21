@@ -11,6 +11,13 @@ export default class CreateUserDto {
   readonly email: string;
 
   @ApiProperty({
+    description: 'Supertoken id'
+  })
+  @IsNotEmpty()
+  @IsString()
+  readonly supertokenId: string;
+
+  @ApiProperty({
     description: 'User\'s name'
   })
   @IsOptional()
@@ -30,12 +37,5 @@ export default class CreateUserDto {
   @IsOptional()
   @IsEnum(SubscriptionPlan)
   readonly subscriptionPlan: SubscriptionPlan;
-
-  @ApiProperty({
-    description: 'Password'
-  })
-  @IsNotEmpty()
-  @IsString()
-  readonly password: string;
 }
 

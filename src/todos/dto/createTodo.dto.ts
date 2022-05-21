@@ -19,7 +19,7 @@ export class CreateTodoDto {
   @ApiProperty({
     description: 'Owner of Todo'
   })
-  @IsNotEmpty()
+  @IsOptional()
   @IsInt()
-  readonly ownerId: number;
+  ownerId: number;
 }

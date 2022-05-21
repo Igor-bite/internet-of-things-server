@@ -1,9 +1,10 @@
 import { Get, Post, Delete, Param, Controller, Body, Put } from "@nestjs/common";
 import ControlsService from './controls.service';
-import { User } from '../decorators/user.decorator';
+import { SupertokenUserId, UserFromSupertokenId } from'../decorators/user.decorator';
 import CreateControlDto from "./dto/createControl.dto";
 import UpdateControlDto from "./dto/updateControl.dto";
 import { ApiBearerAuth, ApiOkResponse, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { User } from "@prisma/client";
 
 @ApiBearerAuth()
 @ApiTags('controls')
@@ -17,9 +18,9 @@ export default class ApiControlsController {
   @ApiResponse({ status: 304, description: 'No changes' })
   @ApiResponse({ status: 401, description: 'No authorization' })
   async getAllControls(
-    @User('id') userId: number
+    @SupertokenUserId(UserFromSupertokenId) user: User
   ) {
-    return await this.controlsService.getAllControls(userId);
+    return await this.controlsService.getAllControls(user.id);
   }
 
   @Get(':id')
@@ -28,10 +29,10 @@ export default class ApiControlsController {
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No control with this id' })
   async getControlById(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Param('id') controlId: number
   ) {
-    return await this.controlsService.getControlById(userId, controlId);
+    return await this.controlsService.getControlById(user.id, controlId);
   }
 
   @Post()
@@ -39,11 +40,11 @@ export default class ApiControlsController {
   @ApiResponse({ status: 400, description: 'The data is not valid for creating' })
   @ApiResponse({ status: 401, description: 'No authorization' })
   async addControl(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Body() controlData: CreateControlDto
   ) {
     console.log(controlData);
-    return await this.controlsService.addControl(userId, controlData);
+    return await this.controlsService.addControl(user.id, controlData);
   }
 
   @Put(':id')
@@ -53,11 +54,11 @@ export default class ApiControlsController {
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No control with this id' })
   async updateControl(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Param('id') controlId: number,
     @Body() controlData: UpdateControlDto
   ) {
-    return await this.controlsService.updateControl(userId, controlId, controlData);
+    return await this.controlsService.updateControl(user.id, controlId, controlData);
   }
 
   @Delete(':id')
@@ -65,9 +66,9 @@ export default class ApiControlsController {
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No control with this id' })
   async removeControl(
-    @User('id') userId: number,
+    @SupertokenUserId(UserFromSupertokenId) user: User,
     @Param('id') controlId: number
   ) {
-    return await this.controlsService.removeControl(userId, controlId);
+    return await this.controlsService.removeControl(user.id, controlId);
   }
 }
