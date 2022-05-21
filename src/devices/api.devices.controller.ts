@@ -1,12 +1,13 @@
-import { Get, Post, Delete, Param, Controller, Body, Put } from "@nestjs/common";
+import { Get, Post, Delete, Param, Controller, Body, Put, UseGuards } from "@nestjs/common";
 import DevicesService from './devices.service';
 import { SupertokenUserId, UserFromSupertokenId } from "../decorators/user.decorator";
 import { ApiBearerAuth, ApiOkResponse, ApiResponse, ApiTags } from "@nestjs/swagger";
 import CreateDeviceDto from "./dto/createDevice.dto";
 import UpdateDeviceDto from "./dto/updateDevice.dto";
 import { User } from "@prisma/client";
+import { AuthGuard } from "../auth/auth.guard";
 
-@ApiBearerAuth()
+@UseGuards(AuthGuard)
 @ApiTags('devices')
 @Controller('devices')
 export default class ApiDevicesController {

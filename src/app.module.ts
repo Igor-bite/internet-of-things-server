@@ -6,6 +6,9 @@ import { ConfigModule } from '@nestjs/config';
 import { ApiModule } from "./api/api.module";
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from "./users/users.module";
+import { WebsocketModule } from "./websocket/websocket.module";
+import { DevicesModule } from "./devices/devices.module";
+import { JwtModule } from "@nestjs/jwt";
 
 @Module({
   imports: [ConfigModule.forRoot(),
@@ -28,6 +31,8 @@ import { UsersModule } from "./users/users.module";
                 websiteBasePath: process.env.WEBSITE_BASE_PATH
               },
             }),
+            WebsocketModule,
+            DevicesModule
   ],
   controllers: [AppController],
   providers: [AppService]

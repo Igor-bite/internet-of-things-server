@@ -52,7 +52,7 @@ export default class ApiDisplaysController {
   @ApiResponse({ status: 400, description: 'The data is not valid for updating' })
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No display with this id' })
-  async updateTodo(
+  async updateDisplay(
     @SupertokenUserId(UserFromSupertokenId) user: User,
     @Param('id') displayId: number,
     @Body() displayData: UpdateDisplayDto
@@ -64,7 +64,7 @@ export default class ApiDisplaysController {
   @ApiResponse({ status: 204, description: 'Display was deleted' })
   @ApiResponse({ status: 401, description: 'No authorization' })
   @ApiResponse({ status: 404, description: 'No display with this id' })
-  async removeTodo(
+  async removeDisplay(
     @SupertokenUserId(UserFromSupertokenId) user: User,
     @Param('id') displayId: number
   ) {
